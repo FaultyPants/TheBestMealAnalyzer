@@ -37,7 +37,7 @@ public class Main extends Application {
         
         //  same thing Charlie did but for Andrew's filter GUI
         Stage filterStage = new Stage();
-        foodList(filterStage);
+        filters(filterStage);
         
         primaryStage.setTitle("Food Query and Meal Analysis");
         
