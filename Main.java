@@ -34,6 +34,10 @@ public class Main extends Application {
       //Call to the foodList GUI scene made by Charlie
         foodList(secondaryStage);
         
+        //  same thing Charlie did but for Andrew's filter GUI
+        Stage filterStage = new Stage();
+        foodList(filterStage);
+        
         primaryStage.setTitle("Food Query and Meal Analysis");
         
         GridPane grid = new GridPane();
@@ -166,6 +170,90 @@ public class Main extends Application {
             
             primaryStage.setScene(new Scene (root2, 500, 500));
             primaryStage.setTitle("Food List");
+            primaryStage.show();
+            
+            
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    //  filters method that generates a place to input filter criteria
+    //  made by Andrew
+    public static void filters(Stage primaryStage) {
+        try {
+            //  create grid pane
+            GridPane grid = new GridPane();
+            grid.setHgap(15);
+            grid.setVgap(15);
+            grid.setPadding(new Insets(30, 30, 30, 30)); //  (top, bottom, right, left)
+            
+            Label headerLabel = new Label("FILTERS");
+            headerLabel.setFont(new Font("Arial", 16));
+            grid.addRow(0, headerLabel);
+            
+            Label containsLabel = new Label("Contains: ");
+            grid.add(containsLabel, 0, 1);     //  child, col, row
+            TextField containsIn = new TextField();
+            containsIn.setPromptText("Enter an ingredient.. ");
+            grid.add(containsIn, 1, 1, 2, 1);     //  span 3 cols, 1 row
+            
+            //  create labels for the top of "table (grid)" to specify what should go in 
+            //  each input
+            Label minLabel = new Label("Minimum");
+            GridPane.setHalignment(minLabel, HPos.CENTER);
+            Label maxLabel = new Label("Maximum");
+            GridPane.setHalignment(maxLabel, HPos.CENTER);
+            Label equalsLabel = new Label("Exact");
+            GridPane.setHalignment(equalsLabel, HPos.CENTER);
+            grid.add(minLabel, 1, 3);
+            grid.add(maxLabel, 2, 3);
+            grid.add(equalsLabel, 3, 3);
+            
+            //  calorie row
+            Label calLabel = new Label("Calories: ");
+            TextField minCalIn = new TextField();
+            TextField maxCalIn = new TextField();
+            TextField equalsCalIn = new TextField();
+            grid.addRow(4, calLabel, minCalIn, maxCalIn, equalsCalIn);
+            
+            //  fat row
+            Label fatLabel = new Label("Fat: ");
+            TextField minFatIn = new TextField();
+            TextField maxFatIn = new TextField();
+            TextField equalsFatIn = new TextField();
+            grid.addRow(5, fatLabel, minFatIn, maxFatIn, equalsFatIn);
+            
+            //  carb row
+            Label carbLabel = new Label("Carbs: ");
+            TextField minCarbIn = new TextField();
+            TextField maxCarbIn = new TextField();
+            TextField equalsCarbIn = new TextField();
+            grid.addRow(6, carbLabel, minCarbIn, maxCarbIn, equalsCarbIn);
+            
+            //  fiber row
+            Label fiberLabel = new Label("Fiber: ");
+            TextField minFiberIn = new TextField();
+            TextField maxFiberIn = new TextField();
+            TextField equalsFiberIn = new TextField();
+            grid.addRow(7, fiberLabel, minFiberIn, maxFiberIn, equalsFiberIn);
+            
+            //  protein row
+            Label proteinLabel = new Label("Protein: ");
+            TextField minProteinIn = new TextField();
+            TextField maxProteinIn = new TextField();
+            TextField equalsProteinIn = new TextField();
+            grid.addRow(8, proteinLabel, minProteinIn, maxProteinIn, equalsProteinIn);
+            
+            //  create button to actually execute program with filter input
+            Button doFilter = new Button();
+            doFilter.setText("Filter");
+            GridPane.setHalignment(doFilter, HPos.RIGHT);
+            grid.add(doFilter, 3, 9);
+            
+            
+            primaryStage.setScene(new Scene(grid));
+            primaryStage.setTitle("Filter");
             primaryStage.show();
             
             
