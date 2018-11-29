@@ -94,6 +94,8 @@ public class Main extends Application {
         hbBtn.getChildren().add(btn);
         grid.add(hbBtn, 3, 7);
         
+        final Text actiontarget = new Text();
+        grid.add(actiontarget, 1, 7);
         btn.setOnAction(new EventHandler<ActionEvent>() {
         	 
             @Override
