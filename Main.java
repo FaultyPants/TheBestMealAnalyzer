@@ -1,4 +1,3 @@
-package application;
 
     
 
@@ -48,19 +47,11 @@ import javafx.scene.text.Text;
 
 import javafx.geometry.HPos;
 
-
-
-
-
 public class Main extends Application {
 
-    
-
     @Override
-
     public void start(Stage primaryStage) {
 
-        
 
       //Created a second stage so that multiple stages can be seen from this class
 
@@ -69,6 +60,7 @@ public class Main extends Application {
       //Call to the foodList GUI scene made by Charlie
 
         foodList(secondaryStage);
+        
 
         
 
@@ -82,6 +74,9 @@ public class Main extends Application {
 
         mealList(thirdStage);
 
+        Stage nutritionalInfo = new Stage();
+        nutritionInformation(nutritionalInfo);
+        
 
         
 
@@ -116,7 +111,6 @@ public class Main extends Application {
         grid.add(scenetitle, 0, 0, 1, 1);
 
 
-
         //Instantiates new text boxes for each required field in addFood//
 
         Label foodName = new Label("Food Name");
@@ -136,8 +130,7 @@ public class Main extends Application {
             TextField calTextField = new TextField();
 
             grid.add(calTextField, 1, 2);
-
-        
+    
 
         Label fatCount = new Label("Fat");
 
@@ -146,8 +139,7 @@ public class Main extends Application {
             TextField fatTextField = new TextField();
 
             grid.add(fatTextField, 1, 3);
-
-        
+       
 
         Label carbCount = new Label("Carbohydrates");
 
@@ -156,7 +148,6 @@ public class Main extends Application {
             TextField carbTextField = new TextField();
 
             grid.add(carbTextField, 1, 4);
-
         
 
         Label fiberCount = new Label("Fiber");
@@ -166,7 +157,6 @@ public class Main extends Application {
             TextField fiberTextField = new TextField();
 
             grid.add(fiberTextField, 1, 5);
-
         
 
         Label proteinCount = new Label("Protein");
@@ -178,8 +168,7 @@ public class Main extends Application {
             grid.add(proteinTextField, 1, 6);
 
         //**********************************************//
-
-        
+       
 
         //Unit Labels for the text boxes//
 
@@ -251,19 +240,63 @@ public class Main extends Application {
 
         primaryStage.show();
 
-    }
-
-
-
-    
+    }   
 
     public static void main(String[] args) {
 
         launch(args);
-
     }
-
     
+    public static void nutritionInformation(Stage primaryStage)
+    {
+    	try
+    	{
+    		GridPane grid = new GridPane();
+    		grid.setHgap(15);
+
+            grid.setVgap(20);
+
+            grid.setPadding(new Insets(20, 20, 20, 20));
+            Label calorieLabel = new Label("Calories:");
+            Label fatLabel = new Label("Fat (g):");
+            Label carbLabel = new Label("Carbs (g):");
+            Label fiberLabel = new Label("Fiber (g):");
+            Label proteinLabel = new Label("Protein (g):");
+            Label ingredientLabel = new Label("Ingredients:");
+            
+            TextField calorieField = new TextField();
+            TextField fatField = new TextField();
+            TextField carbField = new TextField();
+            TextField fiberField = new TextField();
+            TextField proteinField = new TextField();
+            TextField ingredientField = new TextField();
+            
+            grid.add(calorieLabel, 0, 0);
+            grid.add(fatLabel, 0, 1);
+            grid.add(carbLabel, 0, 2);
+            grid.add(fiberLabel, 0, 3);
+            grid.add(proteinLabel, 0, 4);
+            grid.add(ingredientLabel, 0, 5);
+            
+            grid.add(calorieField, 1, 0);
+            grid.add(fatField, 1, 1);
+            grid.add(carbField, 1, 2);
+            grid.add(fiberField, 1, 3);
+            grid.add(proteinField, 1, 4);
+            grid.add(ingredientField, 1, 5);
+            
+            Scene scene = new Scene(grid, 320, 360);
+            primaryStage.setTitle("My Meal Analysis");
+            primaryStage.setScene(scene);
+            primaryStage.show();
+            
+    	}
+    	catch (Exception e)
+    	{
+    		e.printStackTrace();
+    	}
+    	
+    }
 
     //foodList method that holds the code for the Food List scene made by Charlie
 
