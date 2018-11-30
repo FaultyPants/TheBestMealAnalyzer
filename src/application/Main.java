@@ -1,7 +1,5 @@
 package application;
 
-    
-
 import javafx.application.Application;
 
 import javafx.event.ActionEvent;
@@ -49,441 +47,350 @@ import javafx.scene.text.Text;
 
 import javafx.geometry.HPos;
 
-
 public class Main extends Application {
-	
-    public static void main(String[] args) {
 
-        launch(args);
+	public static void main(String[] args) {
 
-    }
+		launch(args);
 
-    @Override
-
-    public void start(Stage primaryStage) {
-    	Stage stage = new Stage();
-  
-    	BorderPane primaryPane = new BorderPane();
-        
-        primaryPane.setBottom(addFood());  	//Creates a stage for add food//
-        primaryPane.setLeft(foodList());
-        primaryPane.setCenter(mealList());
-        primaryPane.setRight(nutritionInformation());
-        primaryPane.setTop(filters());
-        
-        Scene scene = new Scene(primaryPane, 1920, 1080);
-        stage.setTitle("Meal Analysis and Query");
-        
-        stage.setScene(scene);
-        stage.show();
-    }
-
-
-    public static Pane nutritionInformation()
-    {
-    	GridPane grid = new GridPane();
-    try
-	{
-		
-		grid.setHgap(15);
-
-        grid.setVgap(20);
-
-        grid.setPadding(new Insets(20, 20, 20, 20));
-        Label calorieLabel = new Label("Calories:");
-        Label fatLabel = new Label("Fat (g):");
-        Label carbLabel = new Label("Carbs (g):");
-        Label fiberLabel = new Label("Fiber (g):");
-        Label proteinLabel = new Label("Protein (g):");
-        Label ingredientLabel = new Label("Ingredients:");
-        
-        TextField calorieField = new TextField();
-        TextField fatField = new TextField();
-        TextField carbField = new TextField();
-        TextField fiberField = new TextField();
-        TextField proteinField = new TextField();
-        TextField ingredientField = new TextField();
-        
-        grid.add(calorieLabel, 0, 0);
-        grid.add(fatLabel, 0, 1);
-        grid.add(carbLabel, 0, 2);
-        grid.add(fiberLabel, 0, 3);
-        grid.add(proteinLabel, 0, 4);
-        grid.add(ingredientLabel, 0, 5);
-        
-        grid.add(calorieField, 1, 0);
-        grid.add(fatField, 1, 1);
-        grid.add(carbField, 1, 2);
-        grid.add(fiberField, 1, 3);
-        grid.add(proteinField, 1, 4);
-        grid.add(ingredientField, 1, 5);
-        
-       
-        
 	}
-	catch (Exception e)
-	{
-		e.printStackTrace();
-}
-	return grid;
-    }
 
+	@Override
 
-    public static ToolBar addFood() {
-    	
-    	Button button = new Button("Add Food");
-        new HBox(10);
+	public void start(Stage primaryStage) {
+		Stage stage = new Stage();
 
+		BorderPane primaryPane = new BorderPane();
 
-        final Text actiontarget = new Text();
+		primaryPane.setTop(addFood()); // Creates a stage for add food//
+		primaryPane.setCenter(foodList());
+		primaryPane.setRight(mealList());
+		primaryPane.setBottom(nutritionInformation());
+		primaryPane.setLeft(filters());
 
-        button.setOnAction(new EventHandler<ActionEvent>() {   
+		Scene scene = new Scene(primaryPane, 1000, 650);
+		stage.setTitle("Food Query and Meal Analysis");
 
-            @Override
-            public void handle(ActionEvent e) {
+		stage.setScene(scene);
+		stage.show();
+	}
 
-                actiontarget.setFill(Color.FIREBRICK);
-                actiontarget.setText("Analysis button pressed");
+	public static ToolBar nutritionInformation() {
+		ToolBar grid = null;
+		TextField calField = new TextField();
+		TextField fatField = new TextField();
+		TextField carbField = new TextField();
+		TextField fiberField = new TextField();
+		TextField proteinField = new TextField();
+		TextField ingredientField = new TextField();
+		try {
+			calField.setPrefWidth(75);
+			fatField.setPrefWidth(50);
+			carbField.setPrefWidth(50);
+			fiberField.setPrefWidth(50);
+			proteinField.setPrefWidth(50);
+			ingredientField.setPrefWidth(200);
 
-            }
+			grid = new ToolBar(new Label("Calories:"), calField, new Label("Fat (g):"), fatField,
+					new Label("Carbs (g):"), carbField, new Label("Fiber (g):"), fiberField, new Label("Protein (g):"),
+					proteinField, new Separator(), new Label("Ingredients:"), ingredientField);
 
-        });
-        
-        Label paneTitle = new Label("Add Food");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return grid;
+	}
 
-        paneTitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
-       
-    	 ToolBar addFood = new ToolBar(
-         paneTitle,
-         //Instantiates new text boxes for each required field in addFood//
-         new Label("Food Name"),
-             new TextField(),
-             new Separator(),
+	public static ToolBar addFood() {
 
-         new Label("Calories"), 
-             new TextField(),
-             new Label("g."),
+		Button button = new Button("Add Food");
+		new HBox(10);
 
-         new Label("Fat"),
-             new TextField(),
-             new Label("g."),
+		final Text actiontarget = new Text();
 
-         new Label("Carbohydrates"),    
-             new TextField(),
-             new Label("g."),
-         
+		button.setOnAction(new EventHandler<ActionEvent>() {
 
-         new Label("Fiber"),
-             new TextField(),
-             new Label("g."),
+			@Override
+			public void handle(ActionEvent e) {
 
-         new Label("Protein"), 
-             new TextField(),
-             new Label("g."),
-             button
-    			 );
-    	 
-         return addFood;
-    }
-    
+				actiontarget.setFill(Color.FIREBRICK);
+				actiontarget.setText("Analysis button pressed");
 
-    //foodList method that holds the code for the Food List scene made by Charlie
+			}
 
-    public static Pane foodList() {
-    	
-        Pane root2 = new Pane(new Group());
-        
-        try {
+		});
 
 
-            
-              Button filter = new Button();
+		ToolBar addFood = null;
+		TextField foodNameField = new TextField();
+		TextField calField = new TextField();
+		TextField fatField = new TextField();
+		TextField carbField = new TextField();
+		TextField fiberField = new TextField();
+		TextField proteinField = new TextField();
 
-              filter.setText("Add Filter");
+		try {
+			foodNameField.setPrefWidth(150);
+			calField.setPrefWidth(50);
+			fatField.setPrefWidth(50);
+			carbField.setPrefWidth(50);
+			fiberField.setPrefWidth(50);
+			proteinField.setPrefWidth(50);
+			addFood = new ToolBar(
+					// Instantiates new text boxes for each required field in addFood//
+					new Label("Food Name"), foodNameField, new Separator(),
 
-              Button addNewFoodFile = new Button();
+					new Label("Calories"), calField, new Label("g."),
 
-              addNewFoodFile.setLayoutX(360);
+					new Label("Fat"), fatField, new Label("g."),
 
-              addNewFoodFile.setLayoutY(470);
+					new Label("Carbs"), carbField, new Label("g."),
 
-              addNewFoodFile.setText("Load New Food File");
+					new Label("Fiber"), fiberField, new Label("g."),
 
-              Button addFood = new Button();
+					new Label("Protein"), proteinField, new Label("g."), button);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-              addFood.setText("Add Food Item");
+		return addFood;
+	}
 
-              addFood.setLayoutX(79);
+	// foodList method that holds the code for the Food List scene made by Charlie
 
-              addFood.setLayoutY(0);
+	public static Pane foodList() {
 
-              
+		Pane root2 = new Pane(new Group());
 
-              Button saveToFile = new Button();
+		try {
 
-              saveToFile.setText("Save Food List");
+			Button addNewFoodFile = new Button();
 
-              saveToFile.setLayoutX(390);
+			addNewFoodFile.setLayoutX(8);
 
-              
+			addNewFoodFile.setLayoutY(480);
 
-              TableView table = new TableView();
+			addNewFoodFile.setText("Load New Food File");
 
-              
+			Button saveToFile = new Button();
 
-              final Label label = new Label("Food List");
+			saveToFile.setText("Save Food List");
 
-              label.setFont(new Font("Arial", 20));
+			saveToFile.setLayoutX(160);
+			saveToFile.setLayoutY(480);
 
-              TableColumn foodNameCol = new TableColumn("Food Name"); 
+			TableView table = new TableView();
 
-              TableColumn quantityCol = new TableColumn("Quanity");
+			final Label label = new Label("Food List");
 
-              table.getColumns().addAll(foodNameCol, quantityCol);
+			label.setFont(new Font("Arial", 20));
 
-              
+			TableColumn foodNameCol = new TableColumn("Food Name");
 
-              final VBox vbox = new VBox();
+			TableColumn quantityCol = new TableColumn("Quanity");
 
-              vbox.setSpacing(5);
+			table.getColumns().addAll(foodNameCol, quantityCol);
 
-              vbox.setPadding(new Insets(45, 0, 0, 10));
+			final VBox vbox = new VBox();
 
-              vbox.getChildren().addAll(label, table);
+			vbox.setSpacing(5);
 
-              
+			vbox.setPadding(new Insets(45, 0, 0, 10));
 
-              root2.getChildren().addAll(vbox);
+			vbox.getChildren().addAll(label, table);
 
+			root2.getChildren().addAll(vbox);
 
+			root2.getChildren().add(addNewFoodFile);
 
-            root2.getChildren().add(filter);
+			root2.getChildren().add(saveToFile);
 
-            root2.getChildren().add(addNewFoodFile);
+		} catch (Exception e) {
 
-            root2.getChildren().add(addFood);
+			e.printStackTrace();
 
-            root2.getChildren().add(saveToFile);
-            
+		}
+		root2.setPrefWidth(300);
+		root2.setPrefHeight(400);
+		return root2;
 
-        } catch(Exception e) {
+	}
 
-            e.printStackTrace();
+	// filters method that generates a place to input filter criteria
 
-        }
-        return root2;
-       
-    }
+	// made by Andrew
 
-    
+	public static Pane filters() {
+		// create grid pane
 
-    //  filters method that generates a place to input filter criteria
+		GridPane grid = new GridPane();
 
-    //  made by Andrew
+		try {
 
-    public static Pane filters() {
-    	   //  create grid pane
+			grid.setHgap(15);
 
-        GridPane grid = new GridPane();
-        
-        try {
+			grid.setVgap(15);
 
-            grid.setHgap(15);
+			grid.setPadding(new Insets(50, 30, 0, 30)); // (top, bottom, right, left)
 
-            grid.setVgap(15);
+			Label headerLabel = new Label("Filters");
 
-            grid.setPadding(new Insets(30, 30, 30, 30)); //  (top, bottom, right, left)
+			headerLabel.setFont(new Font("Arial", 20));
 
-            
+			grid.addRow(0, headerLabel);
 
-            Label headerLabel = new Label("FILTERS");
+			Label containsLabel = new Label("Contains: ");
 
-            headerLabel.setFont(new Font("Arial", 16));
+			grid.add(containsLabel, 0, 1); // child, col, row
 
-            grid.addRow(0, headerLabel);
+			TextField containsIn = new TextField();
 
-            
+			containsIn.setPromptText("Enter an ingredient.. ");
 
-            Label containsLabel = new Label("Contains: ");
+			grid.add(containsIn, 1, 1, 2, 1); // span 3 cols, 1 row
 
-            grid.add(containsLabel, 0, 1);     //  child, col, row
+			// create labels for the top of "table (grid)" to specify what should go in
 
-            TextField containsIn = new TextField();
+			// each input
 
-            containsIn.setPromptText("Enter an ingredient.. ");
+			Label minLabel = new Label("Min");
+			
+			GridPane.setHalignment(minLabel, HPos.CENTER);
 
-            grid.add(containsIn, 1, 1, 2, 1);     //  span 3 cols, 1 row
+			Label maxLabel = new Label("Max");
 
-            
+			GridPane.setHalignment(maxLabel, HPos.LEFT);
 
-            //  create labels for the top of "table (grid)" to specify what should go in 
+			Label equalsLabel = new Label("Exact");
 
-            //  each input
+			GridPane.setHalignment(equalsLabel, HPos.LEFT);
 
-            Label minLabel = new Label("Minimum");
+			grid.add(minLabel, 1, 3);
 
-            GridPane.setHalignment(minLabel, HPos.CENTER);
+			grid.add(maxLabel, 2, 3);
 
-            Label maxLabel = new Label("Maximum");
+			grid.add(equalsLabel, 3, 3);
 
-            GridPane.setHalignment(maxLabel, HPos.CENTER);
+			// calorie row
 
-            Label equalsLabel = new Label("Exact");
+			Label calLabel = new Label("Calories: ");
 
-            GridPane.setHalignment(equalsLabel, HPos.CENTER);
+			TextField minCalIn = new TextField();
+			minCalIn.setMaxWidth(50);
+			TextField maxCalIn = new TextField();
+			maxCalIn.setMaxWidth(50);
+			TextField equalsCalIn = new TextField();
+			equalsCalIn.setMaxWidth(50);
+			grid.addRow(4, calLabel, minCalIn, maxCalIn, equalsCalIn);
 
-            grid.add(minLabel, 1, 3);
+			// fat row
 
-            grid.add(maxLabel, 2, 3);
+			Label fatLabel = new Label("Fat: ");
 
-            grid.add(equalsLabel, 3, 3);
+			TextField minFatIn = new TextField();
+			minFatIn.setMaxWidth(50);
+			TextField maxFatIn = new TextField();
+			maxFatIn.setMaxWidth(50);
+			TextField equalsFatIn = new TextField();
+			equalsFatIn.setMaxWidth(50);
+			grid.addRow(5, fatLabel, minFatIn, maxFatIn, equalsFatIn);
 
-            
+			// carb row
 
-            //  calorie row
+			Label carbLabel = new Label("Carbs: ");
 
-            Label calLabel = new Label("Calories: ");
+			TextField minCarbIn = new TextField();
+			minCarbIn.setMaxWidth(50);
+			TextField maxCarbIn = new TextField();
+			maxCarbIn.setMaxWidth(50);
+			TextField equalsCarbIn = new TextField();
+			equalsCarbIn.setMaxWidth(50);
+			grid.addRow(6, carbLabel, minCarbIn, maxCarbIn, equalsCarbIn);
 
-            TextField minCalIn = new TextField();
+			// fiber row
 
-            TextField maxCalIn = new TextField();
+			Label fiberLabel = new Label("Fiber: ");
 
-            TextField equalsCalIn = new TextField();
+			TextField minFiberIn = new TextField();
+			minFiberIn.setMaxWidth(50);
+			TextField maxFiberIn = new TextField();
+			maxFiberIn.setMaxWidth(50);
+			TextField equalsFiberIn = new TextField();
+			equalsFiberIn.setMaxWidth(50);
+			grid.addRow(7, fiberLabel, minFiberIn, maxFiberIn, equalsFiberIn);
 
-            grid.addRow(4, calLabel, minCalIn, maxCalIn, equalsCalIn);
+			// protein row
 
-            
+			Label proteinLabel = new Label("Protein: ");
+			TextField minProteinIn = new TextField();
+			minProteinIn.setMaxWidth(50);
+			TextField maxProteinIn = new TextField();
+			maxProteinIn.setMaxWidth(50);
+			TextField equalsProteinIn = new TextField();
+			equalsProteinIn.setMaxWidth(50);
+			grid.addRow(8, proteinLabel, minProteinIn, maxProteinIn, equalsProteinIn);
 
-            //  fat row
+			// create button to actually execute program with filter input
 
-            Label fatLabel = new Label("Fat: ");
+			Button doFilter = new Button();
 
-            TextField minFatIn = new TextField();
+			doFilter.setText("Filter");
 
-            TextField maxFatIn = new TextField();
+			GridPane.setHalignment(doFilter, HPos.RIGHT);
 
-            TextField equalsFatIn = new TextField();
+			grid.add(doFilter, 3, 9);
 
-            grid.addRow(5, fatLabel, minFatIn, maxFatIn, equalsFatIn);
+		} catch (Exception e) {
 
-            
+			e.printStackTrace();
 
-            //  carb row
+		}
+		return grid;
 
-            Label carbLabel = new Label("Carbs: ");
+	}
 
-            TextField minCarbIn = new TextField();
+	public static Pane mealList() {
+		Pane root2 = new Pane();
 
-            TextField maxCarbIn = new TextField();
+		try {
 
-            TextField equalsCarbIn = new TextField();
+			Button analyzeFoodButton = new Button();
 
-            grid.addRow(6, carbLabel, minCarbIn, maxCarbIn, equalsCarbIn);
+			analyzeFoodButton.setLayoutX(180);
+			analyzeFoodButton.setLayoutY(480);
+			analyzeFoodButton.setText("Analyze");
 
-            
 
-            //  fiber row
+			TableView table = new TableView();
 
-            Label fiberLabel = new Label("Fiber: ");
+			final Label label = new Label("Meal List");
 
-            TextField minFiberIn = new TextField();
+			label.setFont(new Font("Arial", 20));
 
-            TextField maxFiberIn = new TextField();
+			TableColumn foodNameCol = new TableColumn("Food Name");
 
-            TextField equalsFiberIn = new TextField();
+			TableColumn quantityCol = new TableColumn("remove");
 
-            grid.addRow(7, fiberLabel, minFiberIn, maxFiberIn, equalsFiberIn);
+			table.getColumns().addAll(foodNameCol, quantityCol);
+			foodNameCol.setCellValueFactory(new PropertyValueFactory<>("firstName"));
 
-            
+			final VBox vbox = new VBox();
 
-            //  protein row
+			vbox.setSpacing(5);
 
-            Label proteinLabel = new Label("Protein: ");
-            TextField minProteinIn = new TextField();
-            TextField maxProteinIn = new TextField();
-            TextField equalsProteinIn = new TextField();
-            grid.addRow(8, proteinLabel, minProteinIn, maxProteinIn, equalsProteinIn);
+			vbox.setPadding(new Insets(45, 0, 0, 10));
 
-            
+			vbox.getChildren().addAll(label, table);
 
-            //  create button to actually execute program with filter input
+			root2.getChildren().addAll(vbox);
 
-            Button doFilter = new Button();
+			root2.getChildren().add(analyzeFoodButton);
 
-            doFilter.setText("Filter");
+		} catch (Exception e) {
 
-            GridPane.setHalignment(doFilter, HPos.RIGHT);
+			e.printStackTrace();
+		}
 
-            grid.add(doFilter, 3, 9);
-
-            
-
-        } catch(Exception e) {
-
-            e.printStackTrace();
-
-        }
-        return grid;
-
-    }
-    
-    public static Pane mealList() {
-    	Pane root2 = new Pane(new Group());
-    	
-        try {
-   
-
-              Button addNewFoodFile = new Button();
-
-              	addNewFoodFile.setLayoutX(360);
-              	addNewFoodFile.setLayoutY(470);
-              	addNewFoodFile.setText("Analyze");
-
-              Button addFood = new Button();
-              	addFood.setText("Add Food Item");
-              	addFood.setLayoutX(79);
-              	addFood.setLayoutY(0);
-
-              
-              Button saveToFile = new Button();
-              	saveToFile.setText("Save Food List");
-              	saveToFile.setLayoutX(390);
-
-              TableView table = new TableView();
-            
-              final Label label = new Label("Meal List");
-
-              label.setFont(new Font("Arial", 20));
-
-              TableColumn foodNameCol = new TableColumn("Food Name"); 
-
-              TableColumn quantityCol = new TableColumn("remove");
-
-              table.getColumns().addAll(foodNameCol, quantityCol);
-              foodNameCol.setCellValueFactory(
-                      new PropertyValueFactory<>("firstName"));
-           
-
-              final VBox vbox = new VBox();
-
-              vbox.setSpacing(5);
-
-              vbox.setPadding(new Insets(45, 0, 0, 10));
-
-              vbox.getChildren().addAll(label, table);
-             
-
-              root2.getChildren().addAll(vbox);
-
-
-            root2.getChildren().add(addNewFoodFile);
-         
-
-        } catch(Exception e) {
-
-            e.printStackTrace();
-        }
-        
-        return root2;
-    }
+		return root2;
+	}
 }
