@@ -1,3 +1,4 @@
+package application;
 
     
 
@@ -47,11 +48,23 @@ import javafx.scene.text.Text;
 
 import javafx.geometry.HPos;
 
+
 public class Main extends Application {
+	
+    public static void main(String[] args) {
+
+        launch(args);
+
+    }
 
     @Override
-    public void start(Stage primaryStage) {
 
+    public void start(Stage primaryStage) {
+    	Stage foodListStage = new Stage();
+    	Stage filterStage = new Stage();
+    	Stage mealListStage = new Stage();
+    	Stage addFoodStage = new Stage();
+    	Stage nutriInfoStage = new Stage();
 
       //Created a second stage so that multiple stages can be seen from this class
 
@@ -59,244 +72,137 @@ public class Main extends Application {
 
       //Call to the foodList GUI scene made by Charlie
 
-        foodList(secondaryStage);
-        
-
-        
+        foodList(secondaryStage);       
 
         //  same thing Charlie did but for Andrew's filter GUI
-
-        Stage filterStage = new Stage();
 
         filters(filterStage);
         
         Stage thirdStage = new Stage();
 
         mealList(thirdStage);
-
-        Stage nutritionalInfo = new Stage();
-        nutritionInformation(nutritionalInfo);
         
-
+        addFood(addFoodStage);
         
+        //Uncomment and rename if needed when implemented
+        //analyzeMeal(nutriInfoStage);
 
-        primaryStage.setTitle("Food Query and Meal Analysis");
+        primaryStage.setTitle("Food Query and Meal Analysis");        
 
-        
-
-        GridPane grid = new GridPane();
-
-        grid.setAlignment(Pos.CENTER);
-
-        grid.setHgap(10);
-
-        grid.setVgap(10);
-
-        grid.setPadding(new Insets(25, 25, 25, 25));
-
-
-
-        Scene scene = new Scene(grid, 500, 350);
-
-        primaryStage.setScene(scene);
-
-        
-
-        Text scenetitle = new Text("Add Food");
-
-        
-
-        scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
-
-        grid.add(scenetitle, 0, 0, 1, 1);
-
-
-        //Instantiates new text boxes for each required field in addFood//
-
-        Label foodName = new Label("Food Name");
-
-        grid.add(foodName, 0, 1);
-
-            TextField foodTextField = new TextField();
-
-            grid.add(foodTextField, 1, 1);
-
-
-
-        Label calCount = new Label("Calories");
-
-        grid.add(calCount, 0, 2); 
-
-            TextField calTextField = new TextField();
-
-            grid.add(calTextField, 1, 2);
-    
-
-        Label fatCount = new Label("Fat");
-
-        grid.add(fatCount, 0, 3);  
-
-            TextField fatTextField = new TextField();
-
-            grid.add(fatTextField, 1, 3);
        
-
-        Label carbCount = new Label("Carbohydrates");
-
-        grid.add(carbCount, 0, 4);     
-
-            TextField carbTextField = new TextField();
-
-            grid.add(carbTextField, 1, 4);
-        
-
-        Label fiberCount = new Label("Fiber");
-
-        grid.add(fiberCount, 0, 5);   
-
-            TextField fiberTextField = new TextField();
-
-            grid.add(fiberTextField, 1, 5);
-        
-
-        Label proteinCount = new Label("Protein");
-
-        grid.add(proteinCount, 0, 6); 
-
-            TextField proteinTextField = new TextField();
-
-            grid.add(proteinTextField, 1, 6);
-
-        //**********************************************//
-       
-
-        //Unit Labels for the text boxes//
-
-        Label calType = new Label("g.");
-
-        grid.add(calType, 3, 2);
-
-        
-
-        Label fatType = new Label("g.");
-
-        grid.add(fatType, 3, 3);
-
-        
-
-        Label carbType = new Label("g.");
-
-        grid.add(carbType, 3, 4);
-
-        
-
-        Label fiberType = new Label("g.");
-
-        grid.add(fiberType, 3, 5);
-
-        
-
-        Label proteinType = new Label("g.");
-
-        grid.add(proteinType, 3, 6);
-
-       //*********************************//
-
-        
-
-        Button btn = new Button("Add New Food");
-
-        HBox hbBtn = new HBox(10);
-
-        hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
-
-        hbBtn.getChildren().add(btn);
-
-        grid.add(hbBtn, 3, 7);
-
-        
-
-        final Text actiontarget = new Text();
-
-        grid.add(actiontarget, 1, 7);
-
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-
-             
-
-            @Override
-
-            public void handle(ActionEvent e) {
-
-                actiontarget.setFill(Color.FIREBRICK);
-
-                actiontarget.setText("Analysis button pressed");
-
-            }
-
-        });
-
-      
-
-        primaryStage.show();
-
-    }   
-
-    public static void main(String[] args) {
-
-        launch(args);
     }
+
+
+
     
-    public static void nutritionInformation(Stage primaryStage)
-    {
-    	try
-    	{
-    		GridPane grid = new GridPane();
-    		grid.setHgap(15);
-
-            grid.setVgap(20);
-
-            grid.setPadding(new Insets(20, 20, 20, 20));
-            Label calorieLabel = new Label("Calories:");
-            Label fatLabel = new Label("Fat (g):");
-            Label carbLabel = new Label("Carbs (g):");
-            Label fiberLabel = new Label("Fiber (g):");
-            Label proteinLabel = new Label("Protein (g):");
-            Label ingredientLabel = new Label("Ingredients:");
-            
-            TextField calorieField = new TextField();
-            TextField fatField = new TextField();
-            TextField carbField = new TextField();
-            TextField fiberField = new TextField();
-            TextField proteinField = new TextField();
-            TextField ingredientField = new TextField();
-            
-            grid.add(calorieLabel, 0, 0);
-            grid.add(fatLabel, 0, 1);
-            grid.add(carbLabel, 0, 2);
-            grid.add(fiberLabel, 0, 3);
-            grid.add(proteinLabel, 0, 4);
-            grid.add(ingredientLabel, 0, 5);
-            
-            grid.add(calorieField, 1, 0);
-            grid.add(fatField, 1, 1);
-            grid.add(carbField, 1, 2);
-            grid.add(fiberField, 1, 3);
-            grid.add(proteinField, 1, 4);
-            grid.add(ingredientField, 1, 5);
-            
-            Scene scene = new Scene(grid, 320, 360);
-            primaryStage.setTitle("My Meal Analysis");
-            primaryStage.setScene(scene);
-            primaryStage.show();
-            
-    	}
-    	catch (Exception e)
-    	{
-    		e.printStackTrace();
-    	}
+    public static void analyzeMeal(Stage primaryStage) {
     	
     }
+
+
+    public static void addFood(Stage foodStage) {
+    	 GridPane grid = new GridPane();
+
+         grid.setAlignment(Pos.CENTER);
+
+         grid.setHgap(10);
+
+         grid.setVgap(10);
+
+         grid.setPadding(new Insets(25, 25, 25, 25));
+
+         Scene scene = new Scene(grid, 500, 350);
+
+         foodStage.setScene(scene);
+         
+         Text scenetitle = new Text("Add Food");
+
+         scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+
+         grid.add(scenetitle, 0, 0, 1, 1);
+
+         //Instantiates new text boxes for each required field in addFood//
+
+         Label foodName = new Label("Food Name");
+         grid.add(foodName, 0, 1);
+             TextField foodTextField = new TextField();
+             grid.add(foodTextField, 1, 1);
+
+
+         Label calCount = new Label("Calories");
+         grid.add(calCount, 0, 2); 
+             TextField calTextField = new TextField();
+             grid.add(calTextField, 1, 2);
+
+         Label fatCount = new Label("Fat");
+         grid.add(fatCount, 0, 3);  
+             TextField fatTextField = new TextField();
+             grid.add(fatTextField, 1, 3);
+
+         Label carbCount = new Label("Carbohydrates");
+         grid.add(carbCount, 0, 4);     
+             TextField carbTextField = new TextField();
+             grid.add(carbTextField, 1, 4);
+         
+
+         Label fiberCount = new Label("Fiber");
+         grid.add(fiberCount, 0, 5);   
+             TextField fiberTextField = new TextField();
+             grid.add(fiberTextField, 1, 5);
+
+         Label proteinCount = new Label("Protein");
+         grid.add(proteinCount, 0, 6); 
+             TextField proteinTextField = new TextField();
+             grid.add(proteinTextField, 1, 6);
+         //**********************************************//
+         
+             
+         //Unit Labels for the text boxes//
+         Label calType = new Label("g.");
+         grid.add(calType, 3, 2);     
+
+         Label fatType = new Label("g.");
+         grid.add(fatType, 3, 3);         
+
+         Label carbType = new Label("g.");
+         grid.add(carbType, 3, 4);      
+
+         Label fiberType = new Label("g.");
+         grid.add(fiberType, 3, 5);        
+
+         Label proteinType = new Label("g.");
+         grid.add(proteinType, 3, 6);
+        //*********************************//
+
+         
+
+         Button button = new Button("Add New Food");
+         HBox hbBtn = new HBox(10);
+
+         hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
+         hbBtn.getChildren().add(button);
+         grid.add(hbBtn, 3, 7);
+
+         final Text actiontarget = new Text();
+         grid.add(actiontarget, 1, 7);
+
+         button.setOnAction(new EventHandler<ActionEvent>() {   
+
+             @Override
+             public void handle(ActionEvent e) {
+
+                 actiontarget.setFill(Color.FIREBRICK);
+                 actiontarget.setText("Analysis button pressed");
+
+             }
+
+         });
+
+       
+
+         foodStage.show();
+    }
+    
 
     //foodList method that holds the code for the Food List scene made by Charlie
 
@@ -521,13 +427,9 @@ public class Main extends Application {
             //  protein row
 
             Label proteinLabel = new Label("Protein: ");
-
             TextField minProteinIn = new TextField();
-
             TextField maxProteinIn = new TextField();
-
             TextField equalsProteinIn = new TextField();
-
             grid.addRow(8, proteinLabel, minProteinIn, maxProteinIn, equalsProteinIn);
 
             
@@ -569,41 +471,26 @@ public class Main extends Application {
         try {
 
             Pane root2 = new Pane(new Group());
-
-            
-
-     
+   
 
               Button addNewFoodFile = new Button();
 
-              addNewFoodFile.setLayoutX(360);
-
-              addNewFoodFile.setLayoutY(470);
-
-              addNewFoodFile.setText("Analyze");
+              	addNewFoodFile.setLayoutX(360);
+              	addNewFoodFile.setLayoutY(470);
+              	addNewFoodFile.setText("Analyze");
 
               Button addFood = new Button();
-
-              addFood.setText("Add Food Item");
-
-              addFood.setLayoutX(79);
-
-              addFood.setLayoutY(0);
+              	addFood.setText("Add Food Item");
+              	addFood.setLayoutX(79);
+              	addFood.setLayoutY(0);
 
               
-
               Button saveToFile = new Button();
-
-              saveToFile.setText("Save Food List");
-
-              saveToFile.setLayoutX(390);
-
-              
+              	saveToFile.setText("Save Food List");
+              	saveToFile.setLayoutX(390);
 
               TableView table = new TableView();
-
-              
-
+            
               final Label label = new Label("Meal List");
 
               label.setFont(new Font("Arial", 20));
@@ -624,38 +511,22 @@ public class Main extends Application {
               vbox.setPadding(new Insets(45, 0, 0, 10));
 
               vbox.getChildren().addAll(label, table);
-
-              
+             
 
               root2.getChildren().addAll(vbox);
 
 
-
-
             root2.getChildren().add(addNewFoodFile);
-
-     
-
-        
-
-            
+         
 
             primaryStage.setScene(new Scene (root2, 500, 500));
-
             primaryStage.setTitle("Meal List");
-
             primaryStage.show();
-
-            
-
-            
+        
 
         } catch(Exception e) {
 
             e.printStackTrace();
-
         }
-
     }
-
 }
