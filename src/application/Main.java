@@ -21,12 +21,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 
 import javafx.scene.control.Label;
-
+import javafx.scene.control.Separator;
 import javafx.scene.control.TableColumn;
 
 import javafx.scene.control.TableView;
 
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToolBar;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 
@@ -60,160 +61,142 @@ public class Main extends Application {
     @Override
 
     public void start(Stage primaryStage) {
-    	Stage foodListStage = new Stage();
-    	Stage filterStage = new Stage();
-    	Stage mealListStage = new Stage();
-    	Stage addFoodStage = new Stage();
-    	Stage nutriInfoStage = new Stage();
-
-      //Created a second stage so that multiple stages can be seen from this class
-
-        Stage secondaryStage = new Stage();
-
-      //Call to the foodList GUI scene made by Charlie
-
-        foodList(secondaryStage);       
-
-        //  same thing Charlie did but for Andrew's filter GUI
-
-        filters(filterStage);
+    	Stage stage = new Stage();
+  
+    	BorderPane primaryPane = new BorderPane();
         
-        Stage thirdStage = new Stage();
-
-        mealList(thirdStage);
+        primaryPane.setBottom(addFood());  	//Creates a stage for add food//
+        primaryPane.setLeft(foodList());
+        primaryPane.setCenter(mealList());
+        primaryPane.setRight(nutritionInformation());
+        primaryPane.setTop(filters());
         
-        addFood(addFoodStage);
+        Scene scene = new Scene(primaryPane, 1920, 1080);
+        stage.setTitle("Meal Analysis and Query");
         
-        //Uncomment and rename if needed when implemented
-        //analyzeMeal(nutriInfoStage);
-
-        primaryStage.setTitle("Food Query and Meal Analysis");        
-
-       
+        stage.setScene(scene);
+        stage.show();
     }
 
 
+    public static Pane nutritionInformation()
+    {
+    	GridPane grid = new GridPane();
+    try
+	{
+		
+		grid.setHgap(15);
 
-    
-    public static void analyzeMeal(Stage primaryStage) {
+        grid.setVgap(20);
+
+        grid.setPadding(new Insets(20, 20, 20, 20));
+        Label calorieLabel = new Label("Calories:");
+        Label fatLabel = new Label("Fat (g):");
+        Label carbLabel = new Label("Carbs (g):");
+        Label fiberLabel = new Label("Fiber (g):");
+        Label proteinLabel = new Label("Protein (g):");
+        Label ingredientLabel = new Label("Ingredients:");
+        
+        TextField calorieField = new TextField();
+        TextField fatField = new TextField();
+        TextField carbField = new TextField();
+        TextField fiberField = new TextField();
+        TextField proteinField = new TextField();
+        TextField ingredientField = new TextField();
+        
+        grid.add(calorieLabel, 0, 0);
+        grid.add(fatLabel, 0, 1);
+        grid.add(carbLabel, 0, 2);
+        grid.add(fiberLabel, 0, 3);
+        grid.add(proteinLabel, 0, 4);
+        grid.add(ingredientLabel, 0, 5);
+        
+        grid.add(calorieField, 1, 0);
+        grid.add(fatField, 1, 1);
+        grid.add(carbField, 1, 2);
+        grid.add(fiberField, 1, 3);
+        grid.add(proteinField, 1, 4);
+        grid.add(ingredientField, 1, 5);
+        
+       
+        
+	}
+	catch (Exception e)
+	{
+		e.printStackTrace();
+}
+	return grid;
+    }
+
+
+    public static ToolBar addFood() {
     	
-    }
+    	Button button = new Button("Add Food");
+        new HBox(10);
 
 
-    public static void addFood(Stage foodStage) {
-    	 GridPane grid = new GridPane();
+        final Text actiontarget = new Text();
 
-         grid.setAlignment(Pos.CENTER);
+        button.setOnAction(new EventHandler<ActionEvent>() {   
 
-         grid.setHgap(10);
+            @Override
+            public void handle(ActionEvent e) {
 
-         grid.setVgap(10);
+                actiontarget.setFill(Color.FIREBRICK);
+                actiontarget.setText("Analysis button pressed");
 
-         grid.setPadding(new Insets(25, 25, 25, 25));
+            }
 
-         Scene scene = new Scene(grid, 500, 350);
+        });
+        
+        Label paneTitle = new Label("Add Food");
 
-         foodStage.setScene(scene);
-         
-         Text scenetitle = new Text("Add Food");
-
-         scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
-
-         grid.add(scenetitle, 0, 0, 1, 1);
-
-         //Instantiates new text boxes for each required field in addFood//
-
-         Label foodName = new Label("Food Name");
-         grid.add(foodName, 0, 1);
-             TextField foodTextField = new TextField();
-             grid.add(foodTextField, 1, 1);
-
-
-         Label calCount = new Label("Calories");
-         grid.add(calCount, 0, 2); 
-             TextField calTextField = new TextField();
-             grid.add(calTextField, 1, 2);
-
-         Label fatCount = new Label("Fat");
-         grid.add(fatCount, 0, 3);  
-             TextField fatTextField = new TextField();
-             grid.add(fatTextField, 1, 3);
-
-         Label carbCount = new Label("Carbohydrates");
-         grid.add(carbCount, 0, 4);     
-             TextField carbTextField = new TextField();
-             grid.add(carbTextField, 1, 4);
-         
-
-         Label fiberCount = new Label("Fiber");
-         grid.add(fiberCount, 0, 5);   
-             TextField fiberTextField = new TextField();
-             grid.add(fiberTextField, 1, 5);
-
-         Label proteinCount = new Label("Protein");
-         grid.add(proteinCount, 0, 6); 
-             TextField proteinTextField = new TextField();
-             grid.add(proteinTextField, 1, 6);
-         //**********************************************//
-         
-             
-         //Unit Labels for the text boxes//
-         Label calType = new Label("g.");
-         grid.add(calType, 3, 2);     
-
-         Label fatType = new Label("g.");
-         grid.add(fatType, 3, 3);         
-
-         Label carbType = new Label("g.");
-         grid.add(carbType, 3, 4);      
-
-         Label fiberType = new Label("g.");
-         grid.add(fiberType, 3, 5);        
-
-         Label proteinType = new Label("g.");
-         grid.add(proteinType, 3, 6);
-        //*********************************//
-
-         
-
-         Button button = new Button("Add New Food");
-         HBox hbBtn = new HBox(10);
-
-         hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
-         hbBtn.getChildren().add(button);
-         grid.add(hbBtn, 3, 7);
-
-         final Text actiontarget = new Text();
-         grid.add(actiontarget, 1, 7);
-
-         button.setOnAction(new EventHandler<ActionEvent>() {   
-
-             @Override
-             public void handle(ActionEvent e) {
-
-                 actiontarget.setFill(Color.FIREBRICK);
-                 actiontarget.setText("Analysis button pressed");
-
-             }
-
-         });
-
+        paneTitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
        
+    	 ToolBar addFood = new ToolBar(
+         paneTitle,
+         //Instantiates new text boxes for each required field in addFood//
+         new Label("Food Name"),
+             new TextField(),
+             new Separator(),
 
-         foodStage.show();
+         new Label("Calories"), 
+             new TextField(),
+             new Label("g."),
+
+         new Label("Fat"),
+             new TextField(),
+             new Label("g."),
+
+         new Label("Carbohydrates"),    
+             new TextField(),
+             new Label("g."),
+         
+
+         new Label("Fiber"),
+             new TextField(),
+             new Label("g."),
+
+         new Label("Protein"), 
+             new TextField(),
+             new Label("g."),
+             button
+    			 );
+    	 
+         return addFood;
     }
     
 
     //foodList method that holds the code for the Food List scene made by Charlie
 
-    public static void foodList(Stage primaryStage) {
-
+    public static Pane foodList() {
+    	
+        Pane root2 = new Pane(new Group());
+        
         try {
 
-            Pane root2 = new Pane(new Group());
 
             
-
               Button filter = new Button();
 
               filter.setText("Add Filter");
@@ -281,17 +264,6 @@ public class Main extends Application {
             root2.getChildren().add(addFood);
 
             root2.getChildren().add(saveToFile);
-
-            
-
-            primaryStage.setScene(new Scene (root2, 500, 500));
-
-            primaryStage.setTitle("Food List");
-
-            primaryStage.show();
-
-            
-
             
 
         } catch(Exception e) {
@@ -299,7 +271,8 @@ public class Main extends Application {
             e.printStackTrace();
 
         }
-
+        return root2;
+       
     }
 
     
@@ -308,13 +281,12 @@ public class Main extends Application {
 
     //  made by Andrew
 
-    public static void filters(Stage primaryStage) {
+    public static Pane filters() {
+    	   //  create grid pane
 
+        GridPane grid = new GridPane();
+        
         try {
-
-            //  create grid pane
-
-            GridPane grid = new GridPane();
 
             grid.setHgap(15);
 
@@ -446,31 +418,19 @@ public class Main extends Application {
 
             
 
-            
-
-            primaryStage.setScene(new Scene(grid));
-
-            primaryStage.setTitle("Filter");
-
-            primaryStage.show();
-
-            
-
-            
-
         } catch(Exception e) {
 
             e.printStackTrace();
 
         }
+        return grid;
 
     }
     
-    public static void mealList(Stage primaryStage) {
-
+    public static Pane mealList() {
+    	Pane root2 = new Pane(new Group());
+    	
         try {
-
-            Pane root2 = new Pane(new Group());
    
 
               Button addNewFoodFile = new Button();
@@ -519,14 +479,11 @@ public class Main extends Application {
             root2.getChildren().add(addNewFoodFile);
          
 
-            primaryStage.setScene(new Scene (root2, 500, 500));
-            primaryStage.setTitle("Meal List");
-            primaryStage.show();
-        
-
         } catch(Exception e) {
 
             e.printStackTrace();
         }
+        
+        return root2;
     }
 }
