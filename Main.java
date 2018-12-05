@@ -105,21 +105,7 @@ public class Main extends Application {
 
 		Button button = new Button("Add Food");
 		new HBox(10);
-
-		final Text actiontarget = new Text();
-
-		button.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent e) {
-
-				actiontarget.setFill(Color.FIREBRICK);
-				actiontarget.setText("Analysis button pressed");
-
-			}
-
-		});
-
+	
 
 		ToolBar addFood = null;
 		TextField foodNameField = new TextField();
@@ -149,6 +135,30 @@ public class Main extends Application {
 					new Label("Fiber"), fiberField, new Label("g."),
 
 					new Label("Protein"), proteinField, new Label("g."), button);
+			
+			button.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent e) {
+					
+					FoodItem(foodNameField.getText());
+					addNutrient("Calories", Double.parseDouble(calField.getText()));
+					addNutrient("Fat", Double.parseDouble(fatField.getText()));
+					addNutrient("Carbs", Double.parseDouble(carbField.getText()));
+					addNutrient("Fiber", Double.parseDouble(fiberField.getText()));
+					addNutrient("Protein", Double.parseDouble(proteinField.getText()));
+					
+					foodNameField.clear();
+					calField.clear();
+					fatField.clear();
+					carbField.clear();
+					fiberField.clear();
+					proteinField.clear();
+					
+				}
+
+			});
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
