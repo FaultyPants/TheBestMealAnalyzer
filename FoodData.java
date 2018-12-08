@@ -1,3 +1,7 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -20,7 +24,8 @@ public class FoodData implements FoodDataADT<FoodItem> {
      * Public constructor
      */
     public FoodData() {
-        // TODO : Complete
+        foodItemList = new ArrayList<FoodItem>();
+        indexes = new HashMap<String, BPTree<Double, FoodItem>>();
     }
     
     
@@ -30,7 +35,34 @@ public class FoodData implements FoodDataADT<FoodItem> {
      */
     @Override
     public void loadFoodItems(String filePath) {
-        // TODO : Complete
+    	String line;
+        try {
+        	FileReader reader = new FileReader(filePath);
+        	BufferedReader bufferedReader = new BufferedReader(reader);
+        	
+        	while((line = bufferedReader.readLine()) != null) 
+        	{
+               String[] foodInfo = line.split(",");
+               if (foodInfo.length != 12)
+               {
+            	   break;
+               }
+               String id = foodInfo[0];
+               String name = foodInfo[1];
+               foodItemList.add(new FoodItem(id, name));
+               FoodItem current = foodItemList.get(foodItemList.size() - 1);
+               for(int i = 2; i < foodInfo.length; i+=2)
+               {
+            	   double value = Double.parseDouble(foodInfo[i+1]);
+            	   current.addNutrient(foodInfo[i], value);
+               }
+            }  
+        	bufferedReader.close();
+         }
+        catch (Exception e)
+        {
+        	e.printStackTrace();
+        }
     }
 
     /*
@@ -39,8 +71,19 @@ public class FoodData implements FoodDataADT<FoodItem> {
      */
     @Override
     public List<FoodItem> filterByName(String substring) {
-        // TODO : Complete
-        return null;
+        
+        ArrayList<FoodItem> filteredFoodList = new ArrayList<FoodItem>();
+        
+        for(int i = 0; i < foodItemList.size(); i++)
+        {
+        	FoodItem currentFood = foodItemList.get(i);
+        	if (currentFood.getName().toLowerCase().contains(substring))
+        	{
+        		System.out.println(currentFood.getName());
+        		filteredFoodList.add(currentFood);
+        	}
+        }
+        return filteredFoodList;
     }
 
     /*
@@ -71,5 +114,12 @@ public class FoodData implements FoodDataADT<FoodItem> {
         // TODO : Complete
         return null;
     }
+
+
+	@Override
+	public void saveFoodItems(String filename) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }
