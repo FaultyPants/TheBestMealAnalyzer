@@ -1,7 +1,10 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -57,11 +60,21 @@ public class FoodData implements FoodDataADT<FoodItem> {
             	   current.addNutrient(foodInfo[i], value);
                }
             }  
+        	Collections.sort(foodItemList, new customComparator());
         	bufferedReader.close();
          }
         catch (Exception e)
         {
         	e.printStackTrace();
+        }
+    }
+    
+    private class customComparator implements Comparator<FoodItem>
+    {
+    	public int compare(FoodItem o1, FoodItem o2) {
+            String nameOne = o1.getName().toLowerCase();
+    		String nameTwo = o2.getName().toLowerCase();
+            return nameOne.compareTo(nameTwo);
         }
     }
 
@@ -118,7 +131,35 @@ public class FoodData implements FoodDataADT<FoodItem> {
 
 	@Override
 	public void saveFoodItems(String filename) {
-		// TODO Auto-generated method stub
+		try {
+			
+			PrintWriter writer = new PrintWriter(filename);	
+			for(int i = 0; i < foodItemList.size(); i++)
+			{
+				String foodInfo = "";
+				FoodItem currentFood = foodItemList.get(i);
+				HashMap<String, Double> nutrients = currentFood.getNutrients();
+				
+				
+				//calories,100,fat,0,carbohydrate,0,fiber,0,protein,3
+				foodInfo += currentFood.getID() + ",";
+				foodInfo += currentFood.getName() +",";
+				foodInfo += "calories," + nutrients.get("calories")+",";
+				foodInfo += "fat," + nutrients.get("fat")+",";
+				foodInfo += "carbohydrate," + nutrients.get("carbohydrate")+",";
+				foodInfo += "fiber," + nutrients.get("fiber")+",";
+				foodInfo += "protein," + nutrients.get("protein") + "\n";
+				//System.out.println(foodInfo);
+				writer.write(foodInfo);
+				
+			}
+			writer.close();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
 		
 	}
 
