@@ -45,21 +45,20 @@ public class FoodData implements FoodDataADT<FoodItem> {
         	
         	while((line = bufferedReader.readLine()) != null) 
         	{
-               String[] foodInfo = line.split(",");
-               if (foodInfo.length != 12)
-               {
-            	   break;
-               }
-               String id = foodInfo[0];
-               String name = foodInfo[1];
-               foodItemList.add(new FoodItem(id, name));
-               FoodItem current = foodItemList.get(foodItemList.size() - 1);
-               for(int i = 2; i < foodInfo.length; i+=2)
-               {
-            	   double value = Double.parseDouble(foodInfo[i+1]);
-            	   current.addNutrient(foodInfo[i], value);
-               }
-            }  
+              	    String[] foodInfo = line.split(",");
+               	    if (foodInfo.length == 12)
+               	    {
+            	  	String id = foodInfo[0];
+                   	String name = foodInfo[1];
+                   	foodItemList.add(new FoodItem(id, name));
+                   	FoodItem current = foodItemList.get(foodItemList.size() - 1);
+                   	for(int i = 2; i < foodInfo.length; i+=2)
+                   	{
+                	   double value = Double.parseDouble(foodInfo[i+1]);
+                	   current.addNutrient(foodInfo[i].toLowerCase(), value);
+                   	}
+               	    }
+            	}  
         	Collections.sort(foodItemList, new customComparator());
         	bufferedReader.close();
          }
