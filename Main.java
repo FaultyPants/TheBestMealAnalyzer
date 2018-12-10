@@ -1,6 +1,10 @@
-package application;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+
+import FoodData.customComparator;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -51,10 +55,8 @@ import javafx.geometry.HPos;
 
 public class Main extends Application {
 	static FoodData foodData;
-    private static List<FoodItem> mealListFood = new ArrayList<FoodItem>();
-    static TableView<FoodItem> mealListTable = new TableView<FoodItem>();
-    static TableView<FoodItem> foodListTable = new TableView<FoodItem>();
-	
+    static TableView foodTable = new TableView();
+    
 	public static void main(String[] args) {
 		foodData = new FoodData();
 		launch(args);
@@ -146,13 +148,28 @@ public class Main extends Application {
 
 				@Override
 				public void handle(ActionEvent e) {
+					FoodItem newFood = new FoodItem( UUID.randomUUID().toString() , foodNameField.getText());
 					
-					FoodItem(foodNameField.getText());
-					addNutrient("Calories", Double.parseDouble(calField.getText()));
-					addNutrient("Fat", Double.parseDouble(fatField.getText()));
-					addNutrient("Carbs", Double.parseDouble(carbField.getText()));
-					addNutrient("Fiber", Double.parseDouble(fiberField.getText()));
-					addNutrient("Protein", Double.parseDouble(proteinField.getText()));
+					if(calField.getText().equals("")|| fatField.getText().equals("") || carbField.getText().equals("") 
+							|| fiberField.getText().equals("") || proteinField.getText().equals("")) {
+						
+						return;
+					}
+							
+					
+					newFood.addNutrient("Calories", Double.parseDouble(calField.getText()));
+					newFood.addNutrient("Fat", Double.parseDouble(fatField.getText()));
+					newFood.addNutrient("Carbs", Double.parseDouble(carbField.getText()));
+					newFood.addNutrient("Fiber", Double.parseDouble(fiberField.getText()));
+					newFood.addNutrient("Protein", Double.parseDouble(proteinField.getText()));
+
+					foodData.addFoodItem(newFood);
+					
+	                ObservableList<FoodItem> data =
+	                                   FXCollections.observableArrayList(foodData.getAllFoodItems());			
+	            //    Iterable 
+					foodTable.setItems(data);
+					
 					
 					foodNameField.clear();
 					calField.clear();
@@ -172,14 +189,17 @@ public class Main extends Application {
 		return addFood;
 	}
 
-// foodList method that holds the code for the Food List scene made by Charlie
+	// foodList method that holds the code for the Food List scene made by Charlie
+
     public static Pane foodList() {
-        
-        
+ 
+
         Pane root2 = new Pane(new Group());
 
         try {
+
             Button addNewFoodFile = new Button();
+            
             addNewFoodFile.setOnAction(new EventHandler<ActionEvent>() {
 
                 @Override
@@ -187,12 +207,15 @@ public class Main extends Application {
                    foodData.loadFoodItems("foodItems.csv");
                    ObservableList<FoodItem> data =
                                    FXCollections.observableArrayList(foodData.getAllFoodItems());
-                   foodListTable.setItems(data);
+                   foodTable.setItems(data);
+                  
                 }
             });
 
             addNewFoodFile.setLayoutX(8);
+
             addNewFoodFile.setLayoutY(480);
+
             addNewFoodFile.setText("Load New Food File");
 
             Button saveToFile = new Button();
@@ -215,17 +238,11 @@ public class Main extends Application {
             addToMealList.setLayoutY(510);
             
             addToMealList.setOnAction(new EventHandler<ActionEvent>() {
-                
-                
+
                 @Override
                 public void handle(ActionEvent event) {
-                    FoodItem foodItem = (FoodItem) foodListTable.getSelectionModel().getSelectedItem();
-                    mealListFood.add(foodItem);
-                    ObservableList<FoodItem> mealListData =
-                                    FXCollections.observableArrayList(mealListFood);
-                    mealListTable.setItems(mealListData);
-                    //System.out.println(mealListFood.toString());
-                    
+                    FoodData foodItem = (FoodData) foodTable.getSelectionModel().getSelectedItem();
+                    //TO DO implement add to meal list
                 }
               });
             
@@ -240,24 +257,34 @@ public class Main extends Application {
            
             //TableColumn quantityCol = new TableColumn("Quanity");
 
-            foodListTable.getColumns().addAll(foodNameCol);
+            foodTable.getColumns().addAll(foodNameCol);
 
             final VBox vbox = new VBox();
 
             vbox.setSpacing(5);
+
             vbox.setPadding(new Insets(45, 0, 0, 10));
-            vbox.getChildren().addAll(label, foodListTable);
+
+            vbox.getChildren().addAll(label, foodTable);
+
             root2.getChildren().addAll(vbox);
+
             root2.getChildren().add(addNewFoodFile);
+
             root2.getChildren().add(saveToFile);
+            
             root2.getChildren().add(addToMealList);
 
         } catch (Exception e) {
+
             e.printStackTrace();
+
         }
+ 
         root2.setPrefWidth(300);
         root2.setPrefHeight(400);
         return root2;
+
     }
 
 	// filters method that generates a place to input filter criteria
@@ -437,55 +464,47 @@ public class Main extends Application {
 	}
 
 	public static Pane mealList() {
-        Pane root2 = new Pane();
+		Pane root2 = new Pane();
 
-        try {
+		try {
 
-            Button analyzeFoodButton = new Button();
-            Button removeFood = new Button();
+			Button analyzeFoodButton = new Button();
 
-            analyzeFoodButton.setLayoutX(180);
-            analyzeFoodButton.setLayoutY(480);
-            analyzeFoodButton.setText("Analyze");
-            
-            removeFood.setLayoutX(100);
-            removeFood.setLayoutY(480);
-            removeFood.setText("Remove");
-            
-            removeFood.setOnAction(new EventHandler<ActionEvent>() {
-            
-            
-            @Override
-            public void handle(ActionEvent event) {
-                FoodItem mealItem = (FoodItem) mealListTable.getSelectionModel().getSelectedItem();
-                mealListFood.remove(mealItem);
-                ObservableList<FoodItem> mealListData =
-                                FXCollections.observableArrayList(mealListFood);
-                mealListTable.setItems(mealListData);
-                }
-            });
-            
-            final Label label = new Label("Meal List");
-            
-            label.setFont(new Font("Arial", 20));
-            TableColumn foodNameCol = new TableColumn("Food Name");
-            foodNameCol.setMinWidth(300);
-            foodNameCol.setCellValueFactory(
-                            new PropertyValueFactory<>("name"));
-            
-            mealListTable.getColumns().addAll(foodNameCol);
-       
-            final VBox vbox = new VBox();
-            vbox.setSpacing(5);
-            vbox.setPadding(new Insets(45, 0, 0, 10));
-            vbox.getChildren().addAll(label, mealListTable);
-            root2.getChildren().addAll(vbox);
-            root2.getChildren().add(analyzeFoodButton);
-            root2.getChildren().add(removeFood);
+			analyzeFoodButton.setLayoutX(180);
+			analyzeFoodButton.setLayoutY(480);
+			analyzeFoodButton.setText("Analyze");
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return root2;
-    }
+
+			TableView table = new TableView();
+
+			final Label label = new Label("Meal List");
+
+			label.setFont(new Font("Arial", 20));
+
+			TableColumn foodNameCol = new TableColumn("Food Name");
+
+			TableColumn quantityCol = new TableColumn("remove");
+
+			table.getColumns().addAll(foodNameCol, quantityCol);
+			foodNameCol.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+
+			final VBox vbox = new VBox();
+
+			vbox.setSpacing(5);
+
+			vbox.setPadding(new Insets(45, 0, 0, 10));
+
+			vbox.getChildren().addAll(label, table);
+
+			root2.getChildren().addAll(vbox);
+
+			root2.getChildren().add(analyzeFoodButton);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+
+		return root2;
+	}
 }

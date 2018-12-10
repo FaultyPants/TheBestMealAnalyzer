@@ -27,7 +27,7 @@ public class FoodData implements FoodDataADT<FoodItem> {
      * Public constructor
      */
     public FoodData() {
-        foodItemList = new ArrayList<FoodItem>();
+        setFoodItemList(new ArrayList<FoodItem>());
         indexes = new HashMap<String, BPTree<Double, FoodItem>>();
     }
     
@@ -45,21 +45,22 @@ public class FoodData implements FoodDataADT<FoodItem> {
         	
         	while((line = bufferedReader.readLine()) != null) 
         	{
-              	    String[] foodInfo = line.split(",");
-               	    if (foodInfo.length == 12)
-               	    {
-            	  	String id = foodInfo[0];
-                   	String name = foodInfo[1];
-                   	foodItemList.add(new FoodItem(id, name));
-                   	FoodItem current = foodItemList.get(foodItemList.size() - 1);
-                   	for(int i = 2; i < foodInfo.length; i+=2)
-                   	{
-                	   double value = Double.parseDouble(foodInfo[i+1]);
-                	   current.addNutrient(foodInfo[i].toLowerCase(), value);
-                   	}
-               	    }
-            	}  
-        	Collections.sort(foodItemList, new customComparator());
+               String[] foodInfo = line.split(",");
+               if (foodInfo.length != 12)
+               {
+            	   break;
+               }
+               String id = foodInfo[0];
+               String name = foodInfo[1];
+               getFoodItemList().add(new FoodItem(id, name));
+               FoodItem current = getFoodItemList().get(getFoodItemList().size() - 1);
+               for(int i = 2; i < foodInfo.length; i+=2)
+               {
+            	   double value = Double.parseDouble(foodInfo[i+1]);
+            	   current.addNutrient(foodInfo[i], value);
+               }
+            }  
+        	Collections.sort(getFoodItemList(), new customComparator());
         	bufferedReader.close();
          }
         catch (Exception e)
@@ -86,9 +87,9 @@ public class FoodData implements FoodDataADT<FoodItem> {
         
         ArrayList<FoodItem> filteredFoodList = new ArrayList<FoodItem>();
         
-        for(int i = 0; i < foodItemList.size(); i++)
+        for(int i = 0; i < getFoodItemList().size(); i++)
         {
-        	FoodItem currentFood = foodItemList.get(i);
+        	FoodItem currentFood = getFoodItemList().get(i);
         	if (currentFood.getName().toLowerCase().contains(substring))
         	{
         		System.out.println(currentFood.getName());
@@ -140,9 +141,9 @@ public class FoodData implements FoodDataADT<FoodItem> {
                 }
             } else {  //  if haven't filtered for nutrient yet look through entire list
                 filteredBy.add(nutrient);
-                for(int j = 0; j < foodItemList.size(); j++) {
+                for(int j = 0; j < getFoodItemList().size(); j++) {
                     
-                    FoodItem currItem = foodItemList.get(i);
+                    FoodItem currItem = getFoodItemList().get(i);
                     if(comparator.equals("==")) {
                         if(currItem.getNutrientValue(nutrient) == Double.valueOf(value)) {
                             filteredList.add(currItem);
@@ -169,8 +170,7 @@ public class FoodData implements FoodDataADT<FoodItem> {
      */
     @Override
     public void addFoodItem(FoodItem foodItem) {
-        foodItemList.add(foodItem);
-	Collections.sort(foodItemList, new customComparator());
+        getFoodItemList().add(foodItem);
     }
 
     /*
@@ -179,8 +179,7 @@ public class FoodData implements FoodDataADT<FoodItem> {
      */
     @Override
     public List<FoodItem> getAllFoodItems() {
-        // TODO : Complete
-        return foodItemList;
+        return getFoodItemList();
     }
 
 
@@ -190,12 +189,11 @@ public class FoodData implements FoodDataADT<FoodItem> {
 		try {
 			
 			PrintWriter writer = new PrintWriter(filename);	
-			for(int i = 0; i < foodItemList.size(); i++)
+			for(int i = 0; i < getFoodItemList().size(); i++)
 			{
 				String foodInfo = "";
-				FoodItem currentFood = foodItemList.get(i);
+				FoodItem currentFood = getFoodItemList().get(i);
 				HashMap<String, Double> nutrients = currentFood.getNutrients();
-				
 				
 				//calories,100,fat,0,carbohydrate,0,fiber,0,protein,3
 				foodInfo += currentFood.getID() + ",";
@@ -205,7 +203,7 @@ public class FoodData implements FoodDataADT<FoodItem> {
 				foodInfo += "carbohydrate," + nutrients.get("carbohydrate")+",";
 				foodInfo += "fiber," + nutrients.get("fiber")+",";
 				foodInfo += "protein," + nutrients.get("protein") + "\n";
-				//System.out.println(foodInfo);
+
 				writer.write(foodInfo);
 				
 			}
@@ -217,6 +215,16 @@ public class FoodData implements FoodDataADT<FoodItem> {
 		}
 		
 		
+	}
+
+
+	public List<FoodItem> getFoodItemList() {
+		return foodItemList;
+	}
+
+
+	public void setFoodItemList(List<FoodItem> foodItemList) {
+		this.foodItemList = foodItemList;
 	}
 
 }

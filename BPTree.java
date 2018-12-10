@@ -69,7 +69,8 @@ public class BPTree<K extends Comparable<K>, V> implements BPTreeADT<K, V> {
             !comparator.contentEquals("==") && 
             !comparator.contentEquals("<=") )
             return new ArrayList<V>();
-        // TODO : Complete
+        
+        
         return null;
     }
     
@@ -382,27 +383,38 @@ public class BPTree<K extends Comparable<K>, V> implements BPTreeADT<K, V> {
          * @see BPTree.Node#rangeSearch(Comparable, String)
          */
         List<V> rangeSearch(K key, String comparator) {
+        	int operator = -2;
             
         	List<V> range = new LinkedList<V>();
         	LeafNode node = this;
+        	
+        	//Establishes comparator type//
+        	switch(comparator) {
+        	case ">=":
+        		operator = 1;
+        		break;
+        	case "==":
+        		operator = 0;
+        		break;
+        	case "<=":
+        		operator = -1;
+        		break;
+        	}
         	
         	while (node != null) {
         		Iterator<K> kIt = node.keys.iterator();
         		Iterator<V> vIt = node.values.iterator();
         		while (kIt.hasNext()) {
-        			K  = kIt.next();
+        			K keyComp = kIt.next();
         			V value = vIt.next();
-        			int cmp1 = key.compareTo(key1);
-        			int cmp2 = key.compareTo(key2);
-        			if (((policy1 == )))
-        				
-        				//TO BE COMPLETED//
+        			int compVal = keyComp.compareTo(key);      			
+        			if (operator == compVal) {
+        				range.add(value);
+        			}
         		}
         	}
-        	
-            
+        	return range;
         }
-        
     } // End of class LeafNode
     
     
