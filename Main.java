@@ -55,6 +55,7 @@ import javafx.geometry.HPos;
 
 public class Main extends Application {
 	static FoodData foodData;
+	private static List<FoodItem> mealListFood = new ArrayList<FoodItem>();
 	static TableView mealListTable = new TableView<FoodItem>();
         static TableView foodTable = new TableView();
     
