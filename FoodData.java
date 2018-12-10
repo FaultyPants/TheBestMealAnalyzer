@@ -8,6 +8,8 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
+import javafx.collections.ObservableList;
+
 /**
  * This class represents the backend for managing all 
  * the operations associated with FoodItems
@@ -217,7 +219,12 @@ public class FoodData implements FoodDataADT<FoodItem> {
 		
 	}
 
-
+	public ObservableList<FoodItem> sortList(ObservableList<FoodItem> foodList){
+		
+		 Collections.sort(foodList, new customComparator());
+		
+		return foodList;
+	}
 	public List<FoodItem> getFoodItemList() {
 		return foodItemList;
 	}
