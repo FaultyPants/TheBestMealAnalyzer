@@ -99,14 +99,69 @@ public class FoodData implements FoodDataADT<FoodItem> {
         return filteredFoodList;
     }
 
-    /*
+/*
      * (non-Javadoc)
      * @see skeleton.FoodDataADT#filterByNutrients(java.util.List)
      */
     @Override
     public List<FoodItem> filterByNutrients(List<String> rules) {
         // TODO : Complete
-        return null;
+        ArrayList<FoodItem> filteredList = new ArrayList<FoodItem>();
+        HashSet<String> filteredBy = new HashSet();
+        
+        for(int i = 0; i < rules.size(); i++) {
+            String ruleLine = rules.get(i);
+            
+            //  should return array size 3 - [<nutrient>, <comparator>, <value>]
+            String[] rule = ruleLine.split(" ");
+            //  check for not null?
+            String nutrient = rule[0];
+            String comparator = rule[1];
+            String value = rule[2];
+            
+            //  nutrient has already been filtered and just need to further filter 
+            //  existing filtered list
+            if(filteredBy.contains(nutrient)) {
+                for( int j = 0; j < filteredList.size(); j++) {
+                    FoodItem currItem = filteredList.get(i);
+                    // probably shouldn't ever have two filter criteria with one being ==
+                    if(comparator.equals("==")) {
+                        if(currItem.getNutrientValue(nutrient) != Double.valueOf(value)) {
+                            filteredList.remove(currItem);
+                        }
+                    } else if(comparator.equals("<=")) {
+                        if(currItem.getNutrientValue(nutrient) > Double.valueOf(value)) {
+                            filteredList.remove(currItem);
+                        }
+                    } else if(comparator.equals(">=")) {
+                        if(currItem.getNutrientValue(nutrient) < Double.valueOf(value)) {
+                            filteredList.remove(currItem);
+                        }
+                    }
+                }
+            } else {  //  if haven't filtered for nutrient yet look through entire list
+                filteredBy.add(nutrient);
+                for(int j = 0; j < foodItemList.size(); j++) {
+                    
+                    FoodItem currItem = foodItemList.get(i);
+                    if(comparator.equals("==")) {
+                        if(currItem.getNutrientValue(nutrient) == Double.valueOf(value)) {
+                            filteredList.add(currItem);
+                        }
+                    } else if(comparator.equals("<=")) {
+                        if(currItem.getNutrientValue(nutrient) <= Double.valueOf(value)) {
+                            filteredList.add(currItem);
+                        }
+                    } else if(comparator.equals(">=")) {
+                        if(currItem.getNutrientValue(nutrient) >= Double.valueOf(value)) {
+                            filteredList.add(currItem);
+                        }
+                    }
+                }
+            }
+        }
+        
+        return filteredList;
     }
 
     /*
@@ -116,6 +171,7 @@ public class FoodData implements FoodDataADT<FoodItem> {
     @Override
     public void addFoodItem(FoodItem foodItem) {
         // TODO : Complete
+        foodItemList.add(foodItem);
     }
 
     /*
@@ -125,8 +181,9 @@ public class FoodData implements FoodDataADT<FoodItem> {
     @Override
     public List<FoodItem> getAllFoodItems() {
         // TODO : Complete
-        return null;
+        return foodItemList;
     }
+
 
 
 	@Override
