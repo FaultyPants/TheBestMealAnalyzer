@@ -48,9 +48,10 @@ import javafx.scene.text.Text;
 import javafx.geometry.HPos;
 
 public class Main extends Application {
-
+	static FoodData foodData;
+	
 	public static void main(String[] args) {
-
+		foodData = new FoodData();
 		launch(args);
 
 	}
@@ -168,63 +169,101 @@ public class Main extends Application {
 
 	// foodList method that holds the code for the Food List scene made by Charlie
 
-	public static Pane foodList() {
+    public static Pane foodList() {
+        TableView table = new TableView();
 
-		Pane root2 = new Pane(new Group());
+        Pane root2 = new Pane(new Group());
 
-		try {
+        try {
 
-			Button addNewFoodFile = new Button();
+            Button addNewFoodFile = new Button();
+            
+            addNewFoodFile.setOnAction(new EventHandler<ActionEvent>() {
 
-			addNewFoodFile.setLayoutX(8);
+                @Override
+                public void handle(ActionEvent event) {
+                   foodData.loadFoodItems("foodItems.csv");
+                   ObservableList<FoodItem> data =
+                                   FXCollections.observableArrayList(foodData.getAllFoodItems());
+                   table.setItems(data);
+                  
+                }
+            });
 
-			addNewFoodFile.setLayoutY(480);
+            addNewFoodFile.setLayoutX(8);
 
-			addNewFoodFile.setText("Load New Food File");
+            addNewFoodFile.setLayoutY(480);
 
-			Button saveToFile = new Button();
+            addNewFoodFile.setText("Load New Food File");
 
-			saveToFile.setText("Save Food List");
+            Button saveToFile = new Button();
+            saveToFile.setText("Save Food List");
+            saveToFile.setLayoutX(160);
+            saveToFile.setLayoutY(480);
+            
+            saveToFile.setOnAction(new EventHandler<ActionEvent>() {
 
-			saveToFile.setLayoutX(160);
-			saveToFile.setLayoutY(480);
+                @Override
+                public void handle(ActionEvent event) {
+                     foodData.saveFoodItems("foodItems.csv");
+                }   
+              }  
+            );
+            
+            Button addToMealList = new Button();
+            addToMealList.setText("Add Selected Item to Meal List");
+            addToMealList.setLayoutX(8);
+            addToMealList.setLayoutY(510);
+            
+            addToMealList.setOnAction(new EventHandler<ActionEvent>() {
 
-			TableView table = new TableView();
+                @Override
+                public void handle(ActionEvent event) {
+                    FoodData foodItem = (FoodData) table.getSelectionModel().getSelectedItem();
+                    //TO DO implement add to meal list
+                }
+              });
+            
+            final Label label = new Label("Food List");
+            label.setFont(new Font("Arial", 20));
 
-			final Label label = new Label("Food List");
+            TableColumn foodNameCol = new TableColumn("Food Name");
+            foodNameCol.setCellValueFactory(
+                            new PropertyValueFactory<>("name"));
+            
+            foodNameCol.setMinWidth(300);
+           
+            //TableColumn quantityCol = new TableColumn("Quanity");
 
-			label.setFont(new Font("Arial", 20));
+            table.getColumns().addAll(foodNameCol);
 
-			TableColumn foodNameCol = new TableColumn("Food Name");
+            final VBox vbox = new VBox();
 
-			TableColumn quantityCol = new TableColumn("Quanity");
+            vbox.setSpacing(5);
 
-			table.getColumns().addAll(foodNameCol, quantityCol);
+            vbox.setPadding(new Insets(45, 0, 0, 10));
 
-			final VBox vbox = new VBox();
+            vbox.getChildren().addAll(label, table);
 
-			vbox.setSpacing(5);
+            root2.getChildren().addAll(vbox);
 
-			vbox.setPadding(new Insets(45, 0, 0, 10));
+            root2.getChildren().add(addNewFoodFile);
 
-			vbox.getChildren().addAll(label, table);
+            root2.getChildren().add(saveToFile);
+            
+            root2.getChildren().add(addToMealList);
 
-			root2.getChildren().addAll(vbox);
+        } catch (Exception e) {
 
-			root2.getChildren().add(addNewFoodFile);
+            e.printStackTrace();
 
-			root2.getChildren().add(saveToFile);
+        }
+ 
+        root2.setPrefWidth(300);
+        root2.setPrefHeight(400);
+        return root2;
 
-		} catch (Exception e) {
-
-			e.printStackTrace();
-
-		}
-		root2.setPrefWidth(300);
-		root2.setPrefHeight(400);
-		return root2;
-
-	}
+    }
 
 	// filters method that generates a place to input filter criteria
 
