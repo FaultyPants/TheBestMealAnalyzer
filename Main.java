@@ -349,6 +349,49 @@ public class Main extends Application {
 			GridPane.setHalignment(doFilter, HPos.RIGHT);
 
 			grid.add(doFilter, 3, 9);
+			
+			doFilter.setOnAction(new EventHandler<ActionEvent>() {
+			    @Override public void handle(ActionEvent e) {
+			        ArrayList<String> filters = new ArrayList<>();
+			        if(minCalIn.getText() != null)
+			            filters.add("calories >= " + minCalIn.getText());
+			        if(maxCalIn.getText() != null)
+			            filters.add("calories <= " + maxCalIn.getText());
+			        if(equalsCalIn.getText() != null)
+			            filters.add("calories == " + equalsCalIn.getText());
+			        
+			        if(minFatIn.getText() != null)
+			            filters.add("fat >= " + minFatIn.getText());
+			        if(maxFatIn.getText() != null)
+			            filters.add("fat <= " + maxFatIn.getText());
+			        if(equalsFatIn.getText() != null)
+			            filters.add("fat == " + equalsFatIn.getText());
+			        
+			        if(minCarbIn.getText() != null)
+			            filters.add("carbs >= " + minCarbIn.getText());
+			        if(maxCarbIn.getText() != null)
+			            filters.add("carbs <= " + maxCarbIn.getText());
+			        if(equalsCarbIn.getText() != null)
+			            filters.add("carbs == " + equalsCarbIn.getText());
+			        
+			        if(minFiberIn.getText() != null)
+			            filters.add("fiber >= " + minFiberIn.getText());
+			        if(maxFiberIn.getText() != null)
+			            filters.add("fiber <= " + maxFiberIn.getText());
+			        if(equalsFiberIn.getText() != null)
+			            filters.add("fiber == " + equalsFiberIn.getText());
+			        
+			        if(minProteinIn.getText() != null)
+			            filters.add("protein >= " + minProteinIn.getText());
+			        if(maxProteinIn.getText() != null)
+			            filters.add("protein <= " + maxProteinIn.getText());
+			        if(equalsProteinIn.getText() != null)
+			            filters.add("protein == " + equalsProteinIn.getText());
+			        
+			        // still need to implement filter by name, filter by ingredient? and
+			        // call filter method on FoodData Instance
+			    }
+			});
 
 		} catch (Exception e) {
 
