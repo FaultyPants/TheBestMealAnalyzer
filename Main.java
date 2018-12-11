@@ -46,7 +46,6 @@ public class Main extends Application {
     private static List<FoodItem> mealListFood = new ArrayList<FoodItem>();
     static TableView<FoodItem> mealListTable = new TableView<FoodItem>();
     static TableView foodTable = new TableView();
-    static  int loadButtonCounter = 0;
     static ObservableList<FoodItem> data = null;
     
     static ToolBar grid = null;
@@ -213,7 +212,6 @@ public class Main extends Application {
                         
                     }
                     foodTable.setItems(data);
-                       loadButtonCounter++;
                 }
 
                 private boolean fileExists(String fileName) {
