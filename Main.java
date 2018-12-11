@@ -60,7 +60,7 @@ import javax.swing.filechooser.*;
 
 
 public class Main extends Application {
-	static String fileName = "foodItems.txt";
+	static String fileName = "foodItems.csv";
 	static FoodData foodData;
 	private static List<FoodItem> mealListFood = new ArrayList<FoodItem>();
 	static TableView<FoodItem> mealListTable = new TableView<FoodItem>();
@@ -237,8 +237,9 @@ public class Main extends Application {
                                 FXCollections.observableArrayList(foodData.getAllFoodItems());
                         
                 	}
-                        foodTable.setItems(data);
+                        
                 	}
+			foodTable.setItems(data);
                 }
 
 				private boolean fileExists(String fileName) {
