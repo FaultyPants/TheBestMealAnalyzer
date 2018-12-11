@@ -324,176 +324,183 @@ public class Main extends Application {
 	// made by Andrew
 
 	public static Pane filters() {
-		// create grid pane
+        // create grid pane
 
-		GridPane grid = new GridPane();
+        GridPane grid = new GridPane();
 
-		try {
+        try {
 
-			grid.setHgap(15);
+            grid.setHgap(15);
 
-			grid.setVgap(15);
+            grid.setVgap(15);
 
-			grid.setPadding(new Insets(50, 30, 0, 30)); // (top, bottom, right, left)
+            grid.setPadding(new Insets(50, 30, 0, 30)); // (top, bottom, right, left)
 
-			Label headerLabel = new Label("Filters");
+            Label headerLabel = new Label("Filters");
 
-			headerLabel.setFont(new Font("Arial", 20));
+            headerLabel.setFont(new Font("Arial", 20));
 
-			grid.addRow(0, headerLabel);
+            grid.addRow(0, headerLabel);
 
-			Label containsLabel = new Label("Contains: ");
+            Label nameLabel = new Label("Name: ");
 
-			grid.add(containsLabel, 0, 1); // child, col, row
+            grid.add(nameLabel, 0, 1); // child, col, row
 
-			TextField containsIn = new TextField();
+            TextField nameIn = new TextField();
 
-			containsIn.setPromptText("Enter an ingredient.. ");
+            nameIn.setPromptText("Enter name (or substring) ");
 
-			grid.add(containsIn, 1, 1, 2, 1); // span 3 cols, 1 row
+            grid.add(nameIn, 1, 1, 2, 1); // span 3 cols, 1 row
 
-			// create labels for the top of "table (grid)" to specify what should go in
+            // create labels for the top of "table (grid)" to specify what should go in
 
-			// each input
+            // each input
 
-			Label minLabel = new Label("Min");
-			
-			GridPane.setHalignment(minLabel, HPos.CENTER);
+            Label minLabel = new Label("Min");
+            
+            GridPane.setHalignment(minLabel, HPos.CENTER);
 
-			Label maxLabel = new Label("Max");
+            Label maxLabel = new Label("Max");
 
-			GridPane.setHalignment(maxLabel, HPos.LEFT);
+            GridPane.setHalignment(maxLabel, HPos.LEFT);
 
-			Label equalsLabel = new Label("Exact");
+            Label equalsLabel = new Label("Exact");
 
-			GridPane.setHalignment(equalsLabel, HPos.LEFT);
+            GridPane.setHalignment(equalsLabel, HPos.LEFT);
 
-			grid.add(minLabel, 1, 3);
+            grid.add(minLabel, 1, 3);
 
-			grid.add(maxLabel, 2, 3);
+            grid.add(maxLabel, 2, 3);
 
-			grid.add(equalsLabel, 3, 3);
+            grid.add(equalsLabel, 3, 3);
 
-			// calorie row
+            // calorie row
 
-			Label calLabel = new Label("Calories: ");
+            Label calLabel = new Label("Calories: ");
 
-			TextField minCalIn = new TextField();
-			minCalIn.setMaxWidth(50);
-			TextField maxCalIn = new TextField();
-			maxCalIn.setMaxWidth(50);
-			TextField equalsCalIn = new TextField();
-			equalsCalIn.setMaxWidth(50);
-			grid.addRow(4, calLabel, minCalIn, maxCalIn, equalsCalIn);
+            TextField minCalIn = new TextField();
+            minCalIn.setMaxWidth(50);
+            TextField maxCalIn = new TextField();
+            maxCalIn.setMaxWidth(50);
+            TextField equalsCalIn = new TextField();
+            equalsCalIn.setMaxWidth(50);
+            grid.addRow(4, calLabel, minCalIn, maxCalIn, equalsCalIn);
 
-			// fat row
+            // fat row
 
-			Label fatLabel = new Label("Fat: ");
+            Label fatLabel = new Label("Fat: ");
 
-			TextField minFatIn = new TextField();
-			minFatIn.setMaxWidth(50);
-			TextField maxFatIn = new TextField();
-			maxFatIn.setMaxWidth(50);
-			TextField equalsFatIn = new TextField();
-			equalsFatIn.setMaxWidth(50);
-			grid.addRow(5, fatLabel, minFatIn, maxFatIn, equalsFatIn);
+            TextField minFatIn = new TextField();
+            minFatIn.setMaxWidth(50);
+            TextField maxFatIn = new TextField();
+            maxFatIn.setMaxWidth(50);
+            TextField equalsFatIn = new TextField();
+            equalsFatIn.setMaxWidth(50);
+            grid.addRow(5, fatLabel, minFatIn, maxFatIn, equalsFatIn);
 
-			// carb row
+            // carb row
 
-			Label carbLabel = new Label("Carbs: ");
+            Label carbLabel = new Label("Carbs: ");
 
-			TextField minCarbIn = new TextField();
-			minCarbIn.setMaxWidth(50);
-			TextField maxCarbIn = new TextField();
-			maxCarbIn.setMaxWidth(50);
-			TextField equalsCarbIn = new TextField();
-			equalsCarbIn.setMaxWidth(50);
-			grid.addRow(6, carbLabel, minCarbIn, maxCarbIn, equalsCarbIn);
+            TextField minCarbIn = new TextField();
+            minCarbIn.setMaxWidth(50);
+            TextField maxCarbIn = new TextField();
+            maxCarbIn.setMaxWidth(50);
+            TextField equalsCarbIn = new TextField();
+            equalsCarbIn.setMaxWidth(50);
+            grid.addRow(6, carbLabel, minCarbIn, maxCarbIn, equalsCarbIn);
 
-			// fiber row
+            // fiber row
 
-			Label fiberLabel = new Label("Fiber: ");
+            Label fiberLabel = new Label("Fiber: ");
 
-			TextField minFiberIn = new TextField();
-			minFiberIn.setMaxWidth(50);
-			TextField maxFiberIn = new TextField();
-			maxFiberIn.setMaxWidth(50);
-			TextField equalsFiberIn = new TextField();
-			equalsFiberIn.setMaxWidth(50);
-			grid.addRow(7, fiberLabel, minFiberIn, maxFiberIn, equalsFiberIn);
+            TextField minFiberIn = new TextField();
+            minFiberIn.setMaxWidth(50);
+            TextField maxFiberIn = new TextField();
+            maxFiberIn.setMaxWidth(50);
+            TextField equalsFiberIn = new TextField();
+            equalsFiberIn.setMaxWidth(50);
+            grid.addRow(7, fiberLabel, minFiberIn, maxFiberIn, equalsFiberIn);
 
-			// protein row
+            // protein row
 
-			Label proteinLabel = new Label("Protein: ");
-			TextField minProteinIn = new TextField();
-			minProteinIn.setMaxWidth(50);
-			TextField maxProteinIn = new TextField();
-			maxProteinIn.setMaxWidth(50);
-			TextField equalsProteinIn = new TextField();
-			equalsProteinIn.setMaxWidth(50);
-			grid.addRow(8, proteinLabel, minProteinIn, maxProteinIn, equalsProteinIn);
+            Label proteinLabel = new Label("Protein: ");
+            TextField minProteinIn = new TextField();
+            minProteinIn.setMaxWidth(50);
+            TextField maxProteinIn = new TextField();
+            maxProteinIn.setMaxWidth(50);
+            TextField equalsProteinIn = new TextField();
+            equalsProteinIn.setMaxWidth(50);
+            grid.addRow(8, proteinLabel, minProteinIn, maxProteinIn, equalsProteinIn);
 
-			// create button to actually execute program with filter input
+            // create button to actually execute program with filter input
 
-			Button doFilter = new Button();
+            Button doFilter = new Button();
 
-			doFilter.setText("Filter");
+            doFilter.setText("Filter");
 
-			GridPane.setHalignment(doFilter, HPos.RIGHT);
+            GridPane.setHalignment(doFilter, HPos.RIGHT);
 
-			grid.add(doFilter, 3, 9);
-			
-			doFilter.setOnAction(new EventHandler<ActionEvent>() {
-			    @Override public void handle(ActionEvent e) {
-			        ArrayList<String> filters = new ArrayList<>();
-			        if(minCalIn.getText() != null)
-			            filters.add("calories >= " + minCalIn.getText());
-			        if(maxCalIn.getText() != null)
-			            filters.add("calories <= " + maxCalIn.getText());
-			        if(equalsCalIn.getText() != null)
-			            filters.add("calories == " + equalsCalIn.getText());
-			        
-			        if(minFatIn.getText() != null)
-			            filters.add("fat >= " + minFatIn.getText());
-			        if(maxFatIn.getText() != null)
-			            filters.add("fat <= " + maxFatIn.getText());
-			        if(equalsFatIn.getText() != null)
-			            filters.add("fat == " + equalsFatIn.getText());
-			        
-			        if(minCarbIn.getText() != null)
-			            filters.add("carbs >= " + minCarbIn.getText());
-			        if(maxCarbIn.getText() != null)
-			            filters.add("carbs <= " + maxCarbIn.getText());
-			        if(equalsCarbIn.getText() != null)
-			            filters.add("carbs == " + equalsCarbIn.getText());
-			        
-			        if(minFiberIn.getText() != null)
-			            filters.add("fiber >= " + minFiberIn.getText());
-			        if(maxFiberIn.getText() != null)
-			            filters.add("fiber <= " + maxFiberIn.getText());
-			        if(equalsFiberIn.getText() != null)
-			            filters.add("fiber == " + equalsFiberIn.getText());
-			        
-			        if(minProteinIn.getText() != null)
-			            filters.add("protein >= " + minProteinIn.getText());
-			        if(maxProteinIn.getText() != null)
-			            filters.add("protein <= " + maxProteinIn.getText());
-			        if(equalsProteinIn.getText() != null)
-			            filters.add("protein == " + equalsProteinIn.getText());
-			        
-			        // still need to implement filter by name, filter by ingredient? and
-			        // call filter method on FoodData Instance
-			    }
-			});
+            grid.add(doFilter, 3, 9);
+            
+            doFilter.setOnAction(new EventHandler<ActionEvent>() {
+                @Override public void handle(ActionEvent e) {
+                    ArrayList<String> filters = new ArrayList<>();
+                    if(minCalIn.getText() != null && (!minCalIn.getText().trim().isEmpty()))
+                        filters.add("calories >= " + minCalIn.getText());
+                    if(maxCalIn.getText() != null && (!maxCalIn.getText().trim().isEmpty()))
+                        filters.add("calories <= " + maxCalIn.getText());
+                    if(equalsCalIn.getText() != null && (!equalsCalIn.getText().trim().isEmpty()))
+                        filters.add("calories == " + equalsCalIn.getText());
+                    
+                    if(minFatIn.getText() != null && (!minFatIn.getText().trim().isEmpty()))
+                        filters.add("fat >= " + minFatIn.getText());
+                    if(maxFatIn.getText() != null && (!maxFatIn.getText().trim().isEmpty()))
+                        filters.add("fat <= " + maxFatIn.getText());
+                    if(equalsFatIn.getText() != null && (!equalsFatIn.getText().trim().isEmpty()))
+                        filters.add("fat == " + equalsFatIn.getText());
+                    
+                    if(minCarbIn.getText() != null && (!minCarbIn.getText().trim().isEmpty()))
+                        filters.add("carbs >= " + minCarbIn.getText());
+                    if(maxCarbIn.getText() != null && (!maxCarbIn.getText().trim().isEmpty()))
+                        filters.add("carbs <= " + maxCarbIn.getText());
+                    if(equalsCarbIn.getText() != null && (!equalsCarbIn.getText().trim().isEmpty()))
+                        filters.add("carbs == " + equalsCarbIn.getText());
+                    
+                    if(minFiberIn.getText() != null && (!minFiberIn.getText().trim().isEmpty()))
+                        filters.add("fiber >= " + minFiberIn.getText());
+                    if(maxFiberIn.getText() != null && (!maxFiberIn.getText().trim().isEmpty()))
+                        filters.add("fiber <= " + maxFiberIn.getText());
+                    if(equalsFiberIn.getText() != null && (!equalsFiberIn.getText().trim().isEmpty()))
+                        filters.add("fiber == " + equalsFiberIn.getText());
+                    
+                    if(minProteinIn.getText() != null && (!minProteinIn.getText().trim().isEmpty()))
+                        filters.add("protein >= " + minProteinIn.getText());
+                    if(maxProteinIn.getText() != null && (!maxProteinIn.getText().trim().isEmpty()))
+                        filters.add("protein <= " + maxProteinIn.getText());
+                    if(equalsProteinIn.getText() != null && (!equalsProteinIn.getText().trim().isEmpty()))
+                        filters.add("protein == " + equalsProteinIn.getText());
+                    String substring;
+                    substring = nameIn.getText();
+                    
+                    // still need to implement filter by name, filter by ingredient? and
+                    // call filter method on FoodData Instance
+                    ObservableList<FoodItem> data =
+                                    FXCollections.observableArrayList(foodData.filterByNutrients(filters));
+                    foodTable.setItems(data);
+                    if(substring != null && (!substring.trim().isEmpty()))
+                        foodData.filterByName(substring);
+                }
+            });
 
-		} catch (Exception e) {
+        } catch (Exception e) {
 
-			e.printStackTrace();
+            e.printStackTrace();
 
-		}
-		return grid;
+        }
+        return grid;
 
-	}
+    }
 
 	public static Pane mealList() {
         Pane root2 = new Pane();
