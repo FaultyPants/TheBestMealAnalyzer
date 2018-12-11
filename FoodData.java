@@ -108,12 +108,7 @@ public class FoodData implements FoodDataADT<FoodItem> {
         return filteredFoodList;
     }
 
-/*
-     * (non-Javadoc)
-     * @see skeleton.FoodDataADT#filterByNutrients(java.util.List)
-     */
-    @Override
-    /*
+    /*	
      * (non-Javadoc)
      * @see skeleton.FoodDataADT#filterByNutrients(java.util.List)
      */
