@@ -109,7 +109,7 @@ public class FoodData implements FoodDataADT<FoodItem> {
     public List<FoodItem> filterByNutrients(List<String> rules) {
         // TODO : Complete
         ArrayList<FoodItem> filteredList = new ArrayList<FoodItem>();
-        HashSet<String> filteredBy = new HashSet();
+        HashSet<String> filteredBy = new HashSet<String>();
         
         for(int i = 0; i < rules.size(); i++) {
             String ruleLine = rules.get(i);
@@ -117,15 +117,15 @@ public class FoodData implements FoodDataADT<FoodItem> {
             //  should return array size 3 - [<nutrient>, <comparator>, <value>]
             String[] rule = ruleLine.split(" ");
             //  check for not null?
-            String nutrient = rule[0];
-            String comparator = rule[1];
-            String value = rule[2];
+            String nutrient = rule[0].trim();
+            String comparator = rule[1].trim();
+            String value = rule[2].trim();
             
             //  nutrient has already been filtered and just need to further filter 
             //  existing filtered list
             if(filteredBy.contains(nutrient)) {
                 for( int j = 0; j < filteredList.size(); j++) {
-                    FoodItem currItem = filteredList.get(i);
+                    FoodItem currItem = filteredList.get(j);
                     // probably shouldn't ever have two filter criteria with one being ==
                     if(comparator.equals("==")) {
                         if(currItem.getNutrientValue(nutrient) != Double.valueOf(value)) {
@@ -145,7 +145,7 @@ public class FoodData implements FoodDataADT<FoodItem> {
                 filteredBy.add(nutrient);
                 for(int j = 0; j < getFoodItemList().size(); j++) {
                     
-                    FoodItem currItem = getFoodItemList().get(i);
+                    FoodItem currItem = getFoodItemList().get(j);
                     if(comparator.equals("==")) {
                         if(currItem.getNutrientValue(nutrient) == Double.valueOf(value)) {
                             filteredList.add(currItem);
