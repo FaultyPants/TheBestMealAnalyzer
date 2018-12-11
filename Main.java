@@ -1,4 +1,4 @@
-package application;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -46,6 +46,7 @@ public class Main extends Application {
     private static List<FoodItem> mealListFood = new ArrayList<FoodItem>();
     static TableView<FoodItem> mealListTable = new TableView<FoodItem>();
     static TableView foodTable = new TableView();
+    static  int loadButtonCounter = 0;
     static ObservableList<FoodItem> data = null;
     
     static ToolBar grid = null;
@@ -60,11 +61,9 @@ public class Main extends Application {
     public static void main(String[] args) {
         foodData = new FoodData();
         launch(args);
-
     }
 
     @Override
-
     public void start(Stage primaryStage) {
         Stage stage = new Stage();
 
@@ -76,7 +75,7 @@ public class Main extends Application {
         primaryPane.setBottom(nutritionInformation());
         primaryPane.setLeft(filters());
 
-        Scene scene = new Scene(primaryPane, 1200, 650);
+        Scene scene = new Scene(primaryPane, 1150, 650);
         stage.setTitle("Food Query and Meal Analysis");
 
         stage.setScene(scene);
@@ -106,9 +105,9 @@ public class Main extends Application {
     public static ToolBar addFood() {
 
         Button button = new Button("Add Food");
-        new HBox(10);
-    
+        new HBox(10);    
 
+        //Instantiates Text Field Objects for each nutrient
         ToolBar addFood = null;
         TextField foodNameField = new TextField();
         TextField calField = new TextField();
@@ -117,15 +116,17 @@ public class Main extends Application {
         TextField fiberField = new TextField();
         TextField proteinField = new TextField();
 
-        try {
+        
+        try {//Sets the desired size for each text box
             foodNameField.setPrefWidth(280);
             calField.setPrefWidth(75);
             fatField.setPrefWidth(60);
             carbField.setPrefWidth(60);
             fiberField.setPrefWidth(60);
             proteinField.setPrefWidth(60);
-            addFood = new ToolBar(
-                    // Instantiates new text boxes for each required field in addFood//
+            
+            addFood = new ToolBar(//Creates a toolbar
+                    // Adds the text boxes to the toolbar//
                     new Label("Food Name"), foodNameField, new Separator(),
 
                     new Label("Calories"), calField, new Label("g."),
@@ -138,34 +139,43 @@ public class Main extends Application {
 
                     new Label("Protein"), proteinField, new Label("g."), button);
             
+            //The event handler for "Add Food" button click
             button.setOnAction(new EventHandler<ActionEvent>() {
 
                 @Override
                 public void handle(ActionEvent e) {
+                	//Creates a new food item with a randomly generated id and the given food name (The name can be empty)
+                	
                     FoodItem newFood = new FoodItem( UUID.randomUUID().toString() , foodNameField.getText());
                     
+                    //If any of the text fields are empty
                     if(calField.getText().equals("")|| fatField.getText().equals("") || carbField.getText().equals("") 
                             || fiberField.getText().equals("") || proteinField.getText().equals("")) {
                         
-                        return;
+                        return;//Do nothing
                     }
                             
-                    
+                    //Otherwise parse the required information from the Text Fields
                     newFood.addNutrient("calories", Double.parseDouble(calField.getText()));
                     newFood.addNutrient("fat", Double.parseDouble(fatField.getText()));
                     newFood.addNutrient("carbohydrate", Double.parseDouble(carbField.getText()));
                     newFood.addNutrient("fiber", Double.parseDouble(fiberField.getText()));
                     newFood.addNutrient("protein", Double.parseDouble(proteinField.getText()));
 
+                    //And add the new food item
                     foodData.addFoodItem(newFood);
                     
+                    //Create a new Observable list of the current foodData list
                     ObservableList<FoodItem> data =
                                        FXCollections.observableArrayList(foodData.getAllFoodItems());           
                     
+                    //Sort the list//
                     data = foodData.sortList(data);
                    
+                    //Set the foodTable items as the new data list
                     foodTable.setItems(data);
                     
+                    //Clear all the textFields//
                     foodNameField.clear();
                     calField.clear();
                     fatField.clear();
@@ -181,6 +191,7 @@ public class Main extends Application {
             e.printStackTrace();
         }
 
+        //Returns the addFood Toolbar
         return addFood;
     }
 
@@ -194,7 +205,16 @@ public class Main extends Application {
 
                 @Override
                 public void handle(ActionEvent event) {
-                               
+                    
+                 if (fileExists(fileName)) {
+                       
+                   foodData.loadFoodItems(fileName);
+                   data =
+                                   FXCollections.observableArrayList(foodData.getAllFoodItems());
+                   
+                    }
+                    else {
+                        
                         FileChooser chooser = new FileChooser();
                         chooser.getExtensionFilters().addAll(
                                 new ExtensionFilter("Text Files or CSV Files", "*.txt", "*.csv"));
@@ -211,7 +231,10 @@ public class Main extends Application {
                                 FXCollections.observableArrayList(foodData.getAllFoodItems());
                         
                     }
+                        
+                    }
                     foodTable.setItems(data);
+                       loadButtonCounter++;
                 }
 
                 private boolean fileExists(String fileName) {
@@ -223,16 +246,28 @@ public class Main extends Application {
                 }
             });
 
-            addNewFoodFile.setLayoutX(10);
-            addNewFoodFile.setLayoutY(510);
+            addNewFoodFile.setLayoutX(8);
+            addNewFoodFile.setLayoutY(480);
             addNewFoodFile.setText("Load New Food File");
 
+            Button saveToFile = new Button();
+            saveToFile.setText("Save Food List");
+            saveToFile.setLayoutX(160);
+            saveToFile.setLayoutY(480);
             
+            saveToFile.setOnAction(new EventHandler<ActionEvent>() {
+
+                @Override
+                public void handle(ActionEvent event) {
+                     foodData.saveFoodItems(saveFileName.getText());
+                }   
+              }  
+            );
             
             Button addToMealList = new Button();
             addToMealList.setText("Add Selected Item to Meal List");
-            addToMealList.setLayoutX(10);
-            addToMealList.setLayoutY(477);
+            addToMealList.setLayoutX(8);
+            addToMealList.setLayoutY(510);
             
             addToMealList.setOnAction(new EventHandler<ActionEvent>() {
                 
@@ -266,7 +301,7 @@ public class Main extends Application {
             vbox.getChildren().addAll(label, foodTable);
             root2.getChildren().addAll(vbox);
             root2.getChildren().add(addNewFoodFile);
-           // root2.getChildren().add(saveToFile);
+            root2.getChildren().add(saveToFile);
             root2.getChildren().add(addToMealList);
 
         } catch (Exception e) {
@@ -396,20 +431,6 @@ public class Main extends Application {
             saveFileName.setText("output.txt");
             grid.addRow(10, saveFileLabel);
             grid.addRow(11, saveFileName);
-            
-            Button saveToFile = new Button();
-            saveToFile.setText("Save Food List");
-            saveToFile.setLayoutX(160);
-            saveToFile.setLayoutY(480);
-            
-            saveToFile.setOnAction(new EventHandler<ActionEvent>() {
-
-                @Override
-                public void handle(ActionEvent event) {
-                     foodData.saveFoodItems(saveFileName.getText());
-                }   
-              }  
-            );
 
             
             Button removeFilter = new Button();
@@ -453,8 +474,6 @@ public class Main extends Application {
 
             grid.add(doFilter, 3, 9);
             grid.add(removeFilter, 2, 9);
-            grid.addRow(11, saveToFile);
-           
             
             doFilter.setOnAction(new EventHandler<ActionEvent>() {
                 @Override public void handle(ActionEvent e) {
