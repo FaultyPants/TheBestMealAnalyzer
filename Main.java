@@ -473,13 +473,23 @@ public class Main extends Application {
                     String substring;
                     substring = nameIn.getText();
                     
-                    // still need to implement filter by name, filter by ingredient? and
-                    // call filter method on FoodData Instance
+                    List<FoodItem> nutrientFilteredList = foodData.filterByNutrients(filters);
+                    List<FoodItem> nameFilteredList = foodData.filterByName(substring);
+                    List<FoodItem> finalFilteredList = new ArrayList<>();
+                    //only want to find intersection if name filter wasn't empty otherwise
+                    //nameFilter returns emptySet
+                    if(substring != null && (!substring.trim().isEmpty())) {
+                        for (FoodItem nameItem : nameFilteredList) {
+                            if(nutrientFilteredList.contains(nameItem)) {
+                                finalFilteredList.add(nameItem);
+                            }
+                        }
+                    } else {
+                        finalFilteredList = nutrientFilteredList;
+                    }
                     ObservableList<FoodItem> data =
-                                    FXCollections.observableArrayList(foodData.filterByNutrients(filters));
+                                    FXCollections.observableArrayList(finalFilteredList);
                     foodTable.setItems(data);
-                    if(substring != null && (!substring.trim().isEmpty()))
-                        foodData.filterByName(substring);
                 }
             });
 
