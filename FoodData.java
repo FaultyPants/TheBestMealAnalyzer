@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -174,7 +175,8 @@ public class FoodData implements FoodDataADT<FoodItem> {
 	@Override
 	public void saveFoodItems(String filename) {
 		try {
-			
+			File file = new File(filename);
+			file.createNewFile();
 			PrintWriter writer = new PrintWriter(filename);	
 			for(int i = 0; i < getFoodItemList().size(); i++)
 			{
