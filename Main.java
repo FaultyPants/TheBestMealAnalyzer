@@ -367,7 +367,7 @@ public class Main extends Application {
 
             Label minLabel = new Label("Min");
             
-            GridPane.setHalignment(minLabel, HPos.CENTER);
+            GridPane.setHalignment(minLabel, HPos.LEFT);
 
             Label maxLabel = new Label("Max");
 
