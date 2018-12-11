@@ -38,13 +38,14 @@ import javafx.geometry.HPos;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.*;
 
-
 public class Main extends Application {
-	static String fileName = "foodItems.csv";
-	static FoodData foodData;
-	private static List<FoodItem> mealListFood = new ArrayList<FoodItem>();
-	static TableView<FoodItem> mealListTable = new TableView<FoodItem>();
+    static String fileName = "foodItems.csv";
+    static FoodData foodData;
+    private static List<FoodItem> mealListFood = new ArrayList<FoodItem>();
+    static TableView<FoodItem> mealListTable = new TableView<FoodItem>();
     static TableView foodTable = new TableView();
+    static  int loadButtonCounter = 0;
+    static ObservableList<FoodItem> data = null;
     
     static ToolBar grid = null;
     static TextField calField = new TextField();
@@ -54,137 +55,135 @@ public class Main extends Application {
     static TextField proteinField = new TextField();
     static TextField ingredientField = new TextField();
 
-	public static void main(String[] args) {
-		foodData = new FoodData();
-		launch(args);
+    public static void main(String[] args) {
+        foodData = new FoodData();
+        launch(args);
 
-	}
+    }
 
-	@Override
+    @Override
 
-	public void start(Stage primaryStage) {
-		Stage stage = new Stage();
+    public void start(Stage primaryStage) {
+        Stage stage = new Stage();
 
-		BorderPane primaryPane = new BorderPane();
+        BorderPane primaryPane = new BorderPane();
 
-		primaryPane.setTop(addFood()); // Creates a stage for add food//
-		primaryPane.setCenter(foodList());
-		primaryPane.setRight(mealList());
-		primaryPane.setBottom(nutritionInformation());
-		primaryPane.setLeft(filters());
+        primaryPane.setTop(addFood()); // Creates a stage for add food//
+        primaryPane.setCenter(foodList());
+        primaryPane.setRight(mealList());
+        primaryPane.setBottom(nutritionInformation());
+        primaryPane.setLeft(filters());
 
-		Scene scene = new Scene(primaryPane, 1000, 650);
-		stage.setTitle("Food Query and Meal Analysis");
+        Scene scene = new Scene(primaryPane, 1000, 650);
+        stage.setTitle("Food Query and Meal Analysis");
 
-		stage.setScene(scene);
-		stage.show();
-	}
+        stage.setScene(scene);
+        stage.show();
+    }
 
-	public static ToolBar nutritionInformation() {
-		
-		try {
-			calField.setPrefWidth(75);
-			fatField.setPrefWidth(50);
-			carbField.setPrefWidth(50);
-			fiberField.setPrefWidth(50);
-			proteinField.setPrefWidth(50);
-			ingredientField.setPrefWidth(200);
+    public static ToolBar nutritionInformation() {
+        
+        try {
+            calField.setPrefWidth(75);
+            fatField.setPrefWidth(50);
+            carbField.setPrefWidth(50);
+            fiberField.setPrefWidth(50);
+            proteinField.setPrefWidth(50);
+            ingredientField.setPrefWidth(200);
 
-			grid = new ToolBar(new Label("Calories:"), calField, new Label("Fat (g):"), fatField,
-					new Label("Carbs (g):"), carbField, new Label("Fiber (g):"), fiberField, new Label("Protein (g):"),
-					proteinField, new Separator(), new Label("Ingredients:"), ingredientField);
+            grid = new ToolBar(new Label("Calories:"), calField, new Label("Fat (g):"), fatField,
+                    new Label("Carbs (g):"), carbField, new Label("Fiber (g):"), fiberField, new Label("Protein (g):"),
+                    proteinField, new Separator(), new Label("Ingredients:"), ingredientField);
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return grid;
-	}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return grid;
+    }
 
-	public static ToolBar addFood() {
+    public static ToolBar addFood() {
 
-		Button button = new Button("Add Food");
-		new HBox(10);
-	
+        Button button = new Button("Add Food");
+        new HBox(10);
+    
 
-		ToolBar addFood = null;
-		TextField foodNameField = new TextField();
-		TextField calField = new TextField();
-		TextField fatField = new TextField();
-		TextField carbField = new TextField();
-		TextField fiberField = new TextField();
-		TextField proteinField = new TextField();
+        ToolBar addFood = null;
+        TextField foodNameField = new TextField();
+        TextField calField = new TextField();
+        TextField fatField = new TextField();
+        TextField carbField = new TextField();
+        TextField fiberField = new TextField();
+        TextField proteinField = new TextField();
 
-		try {
-			foodNameField.setPrefWidth(150);
-			calField.setPrefWidth(50);
-			fatField.setPrefWidth(50);
-			carbField.setPrefWidth(50);
-			fiberField.setPrefWidth(50);
-			proteinField.setPrefWidth(50);
-			addFood = new ToolBar(
-					// Instantiates new text boxes for each required field in addFood//
-					new Label("Food Name"), foodNameField, new Separator(),
+        try {
+            foodNameField.setPrefWidth(150);
+            calField.setPrefWidth(50);
+            fatField.setPrefWidth(50);
+            carbField.setPrefWidth(50);
+            fiberField.setPrefWidth(50);
+            proteinField.setPrefWidth(50);
+            addFood = new ToolBar(
+                    // Instantiates new text boxes for each required field in addFood//
+                    new Label("Food Name"), foodNameField, new Separator(),
 
-					new Label("Calories"), calField, new Label("g."),
+                    new Label("Calories"), calField, new Label("g."),
 
-					new Label("Fat"), fatField, new Label("g."),
+                    new Label("Fat"), fatField, new Label("g."),
 
-					new Label("Carbs"), carbField, new Label("g."),
+                    new Label("Carbs"), carbField, new Label("g."),
 
-					new Label("Fiber"), fiberField, new Label("g."),
+                    new Label("Fiber"), fiberField, new Label("g."),
 
-					new Label("Protein"), proteinField, new Label("g."), button);
-			
-			button.setOnAction(new EventHandler<ActionEvent>() {
+                    new Label("Protein"), proteinField, new Label("g."), button);
+            
+            button.setOnAction(new EventHandler<ActionEvent>() {
 
-				@Override
-				public void handle(ActionEvent e) {
-					FoodItem newFood = new FoodItem( UUID.randomUUID().toString() , foodNameField.getText());
-					
-					if(calField.getText().equals("")|| fatField.getText().equals("") || carbField.getText().equals("") 
-							|| fiberField.getText().equals("") || proteinField.getText().equals("")) {
-						
-						return;
-					}
-							
-					
-					newFood.addNutrient("calories", Double.parseDouble(calField.getText()));
-					newFood.addNutrient("fat", Double.parseDouble(fatField.getText()));
-					newFood.addNutrient("carbohydrate", Double.parseDouble(carbField.getText()));
-					newFood.addNutrient("fiber", Double.parseDouble(fiberField.getText()));
-					newFood.addNutrient("protein", Double.parseDouble(proteinField.getText()));
+                @Override
+                public void handle(ActionEvent e) {
+                    FoodItem newFood = new FoodItem( UUID.randomUUID().toString() , foodNameField.getText());
+                    
+                    if(calField.getText().equals("")|| fatField.getText().equals("") || carbField.getText().equals("") 
+                            || fiberField.getText().equals("") || proteinField.getText().equals("")) {
+                        
+                        return;
+                    }
+                            
+                    
+                    newFood.addNutrient("calories", Double.parseDouble(calField.getText()));
+                    newFood.addNutrient("fat", Double.parseDouble(fatField.getText()));
+                    newFood.addNutrient("carbohydrate", Double.parseDouble(carbField.getText()));
+                    newFood.addNutrient("fiber", Double.parseDouble(fiberField.getText()));
+                    newFood.addNutrient("protein", Double.parseDouble(proteinField.getText()));
 
-					foodData.addFoodItem(newFood);
-					
-	                ObservableList<FoodItem> data =
-	                                   FXCollections.observableArrayList(foodData.getAllFoodItems());			
-	                
-	                data = foodData.sortList(data);
-	               
-					foodTable.setItems(data);
-					
-					foodNameField.clear();
-					calField.clear();
-					fatField.clear();
-					carbField.clear();
-					fiberField.clear();
-					proteinField.clear();
-					
-				}
+                    foodData.addFoodItem(newFood);
+                    
+                    ObservableList<FoodItem> data =
+                                       FXCollections.observableArrayList(foodData.getAllFoodItems());           
+                    
+                    data = foodData.sortList(data);
+                   
+                    foodTable.setItems(data);
+                    
+                    foodNameField.clear();
+                    calField.clear();
+                    fatField.clear();
+                    carbField.clear();
+                    fiberField.clear();
+                    proteinField.clear();
+                    
+                }
 
-			});
+            });
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-		return addFood;
-	}
+        return addFood;
+    }
 
 // foodList method that holds the code for the Food List scene made by Charlie
     public static Pane foodList() {
-        
-        
         Pane root2 = new Pane(new Group());
 
         try {
@@ -193,17 +192,16 @@ public class Main extends Application {
 
                 @Override
                 public void handle(ActionEvent event) {
-                	ObservableList<FoodItem> data = null;
                 
-                	if (fileExists(fileName)) {
+                    if (fileExists(fileName)) {
+                       
                    foodData.loadFoodItems(fileName);
                    data =
                                    FXCollections.observableArrayList(foodData.getAllFoodItems());
                    
-                   
-                	}
-                	else {
-                		JFileChooser chooser = new JFileChooser();
+                    }
+                    else {
+                        JFileChooser chooser = new JFileChooser();
                         FileNameExtensionFilter filter = new FileNameExtensionFilter(
                                 "Text Files", "csv", "txt");
                         chooser.setFileFilter(filter);
@@ -216,19 +214,20 @@ public class Main extends Application {
                         data =
                                 FXCollections.observableArrayList(foodData.getAllFoodItems());
                         
-                	}
+                    }
                         
-                	}
-			foodTable.setItems(data);
+                    }
+                    foodTable.setItems(data);
+                       loadButtonCounter++;
                 }
 
-				private boolean fileExists(String fileName) {
-					File checkFile = new File(fileName);
-					if (checkFile.exists()) {
-						return true;
-					}
-					return false;
-				}
+                private boolean fileExists(String fileName) {
+                    File checkFile = new File(fileName);
+                    if (checkFile.exists()) {
+                        return true;
+                    }
+                    return false;
+                }
             });
 
             addNewFoodFile.setLayoutX(8);
@@ -277,9 +276,6 @@ public class Main extends Application {
                             new PropertyValueFactory<>("name"));
             
             foodNameCol.setMinWidth(300);
-           
-            //TableColumn quantityCol = new TableColumn("Quanity");
-
             foodTable.getColumns().addAll(foodNameCol);
 
             final VBox vbox = new VBox();
@@ -300,11 +296,11 @@ public class Main extends Application {
         return root2;
     }
 
-	// filters method that generates a place to input filter criteria
+    // filters method that generates a place to input filter criteria
 
-	// made by Andrew
+    // made by Andrew
 
-	public static Pane filters() {
+    public static Pane filters() {
         // create grid pane
 
         GridPane grid = new GridPane();
@@ -413,8 +409,11 @@ public class Main extends Application {
             TextField equalsProteinIn = new TextField();
             equalsProteinIn.setMaxWidth(50);
             grid.addRow(8, proteinLabel, minProteinIn, maxProteinIn, equalsProteinIn);
-		
-		 Button removeFilter = new Button();
+
+            
+
+            
+            Button removeFilter = new Button();
             removeFilter.setText("Remove Filter");
             removeFilter.setOnAction(new EventHandler<ActionEvent>(){
 
@@ -424,18 +423,15 @@ public class Main extends Application {
                     foodTable.setItems(data);
                 }
             });
-		
-		
-            // create button to actually execute program with filter input
-
+            
+         // create button to actually execute program with filter input
             Button doFilter = new Button();
-
             doFilter.setText("Filter");
 
             GridPane.setHalignment(doFilter, HPos.RIGHT);
 
             grid.add(doFilter, 3, 9);
-	    grid.add(removeFilter, 2, 9);
+            grid.add(removeFilter, 2, 9);
             
             doFilter.setOnAction(new EventHandler<ActionEvent>() {
                 @Override public void handle(ActionEvent e) {
@@ -496,7 +492,7 @@ public class Main extends Application {
 
     }
 
-	public static Pane mealList() {
+    public static Pane mealList() {
         Pane root2 = new Pane();
 
         try {
@@ -516,32 +512,32 @@ public class Main extends Application {
             
             @Override
             public void handle(ActionEvent event) {
-            	double calories = 0;
-        		double fat = 0;
-        		double fiber = 0;
-        		double carbohydrate = 0;
-        		double protein = 0;
-        		String allFood = "";
-            	for(int i = 0; i < mealListTable.getItems().size(); i++)
-            	{
-            		ObservableList<FoodItem> foodList = mealListTable.getItems();
-            		FoodItem currentFoodItem = foodList.get(i);
-            		HashMap<String, Double> nutrients = currentFoodItem.getNutrients();
-            		calories += nutrients.get("calories");
-            		fiber += nutrients.get("fiber");
-            		fat += nutrients.get("fat");
-            		carbohydrate += nutrients.get("carbohydrate");
-            		protein += nutrients.get("protein");
-            		allFood += currentFoodItem.getName() + ", ";            		
-            	}
-            	
-            	calField.setText(Double.toString(calories));
-            	fatField.setText(Double.toString(fat));
-            	fiberField.setText(Double.toString(fiber));
-            	proteinField.setText(Double.toString(protein));
-            	carbField.setText(Double.toString(carbohydrate));
-            	ingredientField.setText(allFood);
-            }         	
+                double calories = 0;
+                double fat = 0;
+                double fiber = 0;
+                double carbohydrate = 0;
+                double protein = 0;
+                String allFood = "";
+                for(int i = 0; i < mealListTable.getItems().size(); i++)
+                {
+                    ObservableList<FoodItem> foodList = mealListTable.getItems();
+                    FoodItem currentFoodItem = foodList.get(i);
+                    HashMap<String, Double> nutrients = currentFoodItem.getNutrients();
+                    calories += nutrients.get("calories");
+                    fiber += nutrients.get("fiber");
+                    fat += nutrients.get("fat");
+                    carbohydrate += nutrients.get("carbohydrate");
+                    protein += nutrients.get("protein");
+                    allFood += currentFoodItem.getName() + ", ";                    
+                }
+                
+                calField.setText(Double.toString(calories));
+                fatField.setText(Double.toString(fat));
+                fiberField.setText(Double.toString(fiber));
+                proteinField.setText(Double.toString(protein));
+                carbField.setText(Double.toString(carbohydrate));
+                ingredientField.setText(allFood);
+            }           
             });
             
             
