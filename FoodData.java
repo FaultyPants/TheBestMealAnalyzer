@@ -40,6 +40,11 @@ public class FoodData implements FoodDataADT<FoodItem> {
      */
     @Override
     public void loadFoodItems(String filePath) {
+	    
+	    if(foodItemList.size() > 0) {
+            foodItemList.clear();
+        }
+	    
     	String line;
         try {
         	FileReader reader = new FileReader(filePath);
