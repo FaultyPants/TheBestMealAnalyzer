@@ -37,6 +37,8 @@ import javafx.scene.text.Text;
 import javafx.geometry.HPos;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.*;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 
 public class Main extends Application {
     static String fileName = "foodItems.csv";
@@ -192,8 +194,8 @@ public class Main extends Application {
 
                 @Override
                 public void handle(ActionEvent event) {
-                
-                    if (fileExists(fileName)) {
+                    
+                 if (fileExists(fileName)) {
                        
                    foodData.loadFoodItems(fileName);
                    data =
@@ -201,16 +203,19 @@ public class Main extends Application {
                    
                     }
                     else {
-                        JFileChooser chooser = new JFileChooser();
-                        FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                                "Text Files", "csv", "txt");
-                        chooser.setFileFilter(filter);
-                        int returnVal = chooser.showOpenDialog(null);
-                        if(returnVal == JFileChooser.APPROVE_OPTION) {
-                            
-                        fileName = chooser.getSelectedFile().getAbsolutePath();
                         
-                        foodData.loadFoodItems(chooser.getSelectedFile().getAbsolutePath());
+                        FileChooser chooser = new FileChooser();
+                        chooser.getExtensionFilters().addAll(
+                                new ExtensionFilter("Text Files or CSV Files", "*.txt", "*.csv"));
+                               
+                        
+                        File selectedFile = chooser.showOpenDialog(null);
+                        
+                        if(selectedFile != null) {
+                            
+                        fileName = selectedFile.getAbsolutePath();
+                        
+                        foodData.loadFoodItems(selectedFile.getAbsolutePath());
                         data =
                                 FXCollections.observableArrayList(foodData.getAllFoodItems());
                         
