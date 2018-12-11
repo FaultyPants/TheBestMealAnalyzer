@@ -56,7 +56,8 @@ public class Main extends Application {
     static TextField fiberField = new TextField();
     static TextField proteinField = new TextField();
     static TextField ingredientField = new TextField();
-
+    static TextField saveFileName = new TextField();
+    
     public static void main(String[] args) {
         foodData = new FoodData();
         launch(args);
@@ -76,7 +77,7 @@ public class Main extends Application {
         primaryPane.setBottom(nutritionInformation());
         primaryPane.setLeft(filters());
 
-        Scene scene = new Scene(primaryPane, 1000, 650);
+        Scene scene = new Scene(primaryPane, 1150, 650);
         stage.setTitle("Food Query and Meal Analysis");
 
         stage.setScene(scene);
@@ -87,11 +88,11 @@ public class Main extends Application {
         
         try {
             calField.setPrefWidth(75);
-            fatField.setPrefWidth(50);
-            carbField.setPrefWidth(50);
-            fiberField.setPrefWidth(50);
-            proteinField.setPrefWidth(50);
-            ingredientField.setPrefWidth(200);
+            fatField.setPrefWidth(60);
+            carbField.setPrefWidth(60);
+            fiberField.setPrefWidth(60);
+            proteinField.setPrefWidth(60);
+            ingredientField.setPrefWidth(300);
 
             grid = new ToolBar(new Label("Calories:"), calField, new Label("Fat (g):"), fatField,
                     new Label("Carbs (g):"), carbField, new Label("Fiber (g):"), fiberField, new Label("Protein (g):"),
@@ -118,12 +119,12 @@ public class Main extends Application {
         TextField proteinField = new TextField();
 
         try {
-            foodNameField.setPrefWidth(150);
-            calField.setPrefWidth(50);
-            fatField.setPrefWidth(50);
-            carbField.setPrefWidth(50);
-            fiberField.setPrefWidth(50);
-            proteinField.setPrefWidth(50);
+            foodNameField.setPrefWidth(280);
+            calField.setPrefWidth(75);
+            fatField.setPrefWidth(60);
+            carbField.setPrefWidth(60);
+            fiberField.setPrefWidth(60);
+            proteinField.setPrefWidth(60);
             addFood = new ToolBar(
                     // Instantiates new text boxes for each required field in addFood//
                     new Label("Food Name"), foodNameField, new Separator(),
@@ -248,7 +249,7 @@ public class Main extends Application {
 
                 @Override
                 public void handle(ActionEvent event) {
-                     foodData.saveFoodItems("foodItems.csv");
+                     foodData.saveFoodItems(saveFileName.getText());
                 }   
               }  
             );
@@ -415,7 +416,11 @@ public class Main extends Application {
             equalsProteinIn.setMaxWidth(50);
             grid.addRow(8, proteinLabel, minProteinIn, maxProteinIn, equalsProteinIn);
 
-            
+            Label saveFileLabel = new Label("Save Food List Location: ");
+            saveFileName.setMaxWidth(250);
+            saveFileName.setText("output.txt");
+            grid.addRow(10, saveFileLabel);
+            grid.addRow(11, saveFileName);
 
             
             Button removeFilter = new Button();
