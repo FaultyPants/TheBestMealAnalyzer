@@ -173,6 +173,7 @@ public class FoodData implements FoodDataADT<FoodItem> {
     @Override
     public void addFoodItem(FoodItem foodItem) {
         getFoodItemList().add(foodItem);
+	Collections.sort(getFoodItemList(), new customComparator());
     }
 
     /*
