@@ -202,120 +202,129 @@ public class Main extends Application {
         return addFood;
     }
 
-// foodList method that holds the code for the Food List scene made by Charlie
+ /**
+     * This method sets up the layout and functionality of the foodList pane on the scene
+     * 
+     * @return root2
+     */
     public static Pane foodList() {
+        
+        //Creates a pane for all the buttons and tableView to show up on
         Pane root2 = new Pane(new Group());
 
         try {
+            //Create button for user to load food file
             Button addNewFoodFile = new Button();
+            
+         // Event handler for the button that allows user to upload a new food file
             addNewFoodFile.setOnAction(new EventHandler<ActionEvent>() {
 
+             
                 @Override
                 public void handle(ActionEvent event) {
-                    
-                 if (fileExists(fileName)) {
-                       
-                   foodData.loadFoodItems(fileName);
-                   data =
-                                   FXCollections.observableArrayList(foodData.getAllFoodItems());
-                   
-                    }
-                    else {
                         
+                    //File chooser to let user pick the file they want to upload
                         FileChooser chooser = new FileChooser();
+                        
+                        // Only lets user select .txt and .csv files
                         chooser.getExtensionFilters().addAll(
                                 new ExtensionFilter("Text Files or CSV Files", "*.txt", "*.csv"));
-                               
                         
+                        // Field that will hold the file the user selects       
                         File selectedFile = chooser.showOpenDialog(null);
                         
                         if(selectedFile != null) {
-                            
+                            // sets the absolute path of the file to fileName to be passed
+                            // to the loadFoodFile function in FoodData
                         fileName = selectedFile.getAbsolutePath();
                         
+                        // passes the selected file to the loadFile method in FoodData
                         foodData.loadFoodItems(selectedFile.getAbsolutePath());
+                        
+                        //Field to hold the observable list used to update TableView items
                         data =
                                 FXCollections.observableArrayList(foodData.getAllFoodItems());
                         
                     }
-                        
-                    }
+                    // Sets the items from the data list to the columns in the Table View
                     foodTable.setItems(data);
-                       loadButtonCounter++;
                 }
+            }); // end of anonymous event handler class
 
-                private boolean fileExists(String fileName) {
-                    File checkFile = new File(fileName);
-                    if (checkFile.exists()) {
-                        return true;
-                    }
-                    return false;
-                }
-            });
-
-            addNewFoodFile.setLayoutX(8);
-            addNewFoodFile.setLayoutY(480);
+            // Sets the layout for the addNewFile button
+            addNewFoodFile.setLayoutX(10);
+            addNewFoodFile.setLayoutY(510);
             addNewFoodFile.setText("Load New Food File");
-
-            Button saveToFile = new Button();
-            saveToFile.setText("Save Food List");
-            saveToFile.setLayoutX(160);
-            saveToFile.setLayoutY(480);
             
-            saveToFile.setOnAction(new EventHandler<ActionEvent>() {
-
-                @Override
-                public void handle(ActionEvent event) {
-                     foodData.saveFoodItems(saveFileName.getText());
-                }   
-              }  
-            );
-            
+            // adds and sets the layout for the addToMealList button
             Button addToMealList = new Button();
             addToMealList.setText("Add Selected Item to Meal List");
-            addToMealList.setLayoutX(8);
-            addToMealList.setLayoutY(510);
+            addToMealList.setLayoutX(10);
+            addToMealList.setLayoutY(477);
             
+            //Set on action anonymous class for event handler
             addToMealList.setOnAction(new EventHandler<ActionEvent>() {
                 
-                
+                // Event handler for the addToMealList button
                 @Override
                 public void handle(ActionEvent event) {
+                    
+                    // sets the selected item from food list to a FoodItem object
                     FoodItem foodItem = (FoodItem) foodTable.getSelectionModel().getSelectedItem();
+                    
+                    // adds the selected foodItem to the mealList list
                     mealListFood.add(foodItem);
+                    
+                    // Sets the mealListFood list to an observableList so it can be used
+                    //to update the table view
                     ObservableList<FoodItem> mealListData =
                                     FXCollections.observableArrayList(mealListFood);
-                    mealListTable.setItems(mealListData);
-                    //System.out.println(mealListFood.toString());
                     
+                    // sets the mealList table view column items to the items in the list
+                    mealListTable.setItems(mealListData);
                 }
-              });
+              }); // end of anonymous Event handler class
             
+            // Sets the label of the food list pane
             final Label label = new Label("Food List");
             label.setFont(new Font("Arial", 20));
 
+            // Creates and names a foodNameCol column for tableView 
             TableColumn foodNameCol = new TableColumn("Food Name");
+            // Sets a property for the tableView cell, used to get the info from the 
+            // foodItemList
             foodNameCol.setCellValueFactory(
                             new PropertyValueFactory<>("name"));
             
+            // sets the width of the column
             foodNameCol.setMinWidth(300);
+           
+            //adds the column to the table view
             foodTable.getColumns().addAll(foodNameCol);
 
+            // creates a new vertical box for the pane
             final VBox vbox = new VBox();
 
+            //sets the layout, label and adds the table view of the vertical box
             vbox.setSpacing(5);
             vbox.setPadding(new Insets(45, 0, 0, 10));
             vbox.getChildren().addAll(label, foodTable);
+            
+            //  adds the buttons and vertical box to the pane
             root2.getChildren().addAll(vbox);
             root2.getChildren().add(addNewFoodFile);
-            root2.getChildren().add(saveToFile);
             root2.getChildren().add(addToMealList);
 
+        
         } catch (Exception e) {
             e.printStackTrace();
         }
+        
+        // sets the width and height of the pane
         root2.setPrefWidth(300);
         root2.setPrefHeight(400);
+        
+        //returns the pane to be shown to the stage
         return root2;
     }
 
