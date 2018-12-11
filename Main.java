@@ -421,6 +421,28 @@ public class Main extends Application {
                 public void handle(ActionEvent event) {
                     data = FXCollections.observableArrayList(foodData.getAllFoodItems());
                     foodTable.setItems(data);
+                    
+                    nameIn.clear();
+                    
+                    minCalIn.clear();
+                    maxCalIn.clear();
+                    equalsCalIn.clear();
+                    
+                    minFatIn.clear();
+                    maxFatIn.clear();
+                    equalsFatIn.clear();
+                    
+                    minCarbIn.clear();
+                    maxCarbIn.clear();
+                    equalsCarbIn.clear();
+                    
+                    minFiberIn.clear();
+                    maxFiberIn.clear();
+                    equalsFiberIn.clear();
+                    
+                    minProteinIn.clear();
+                    maxProteinIn.clear(); 
+                    equalsProteinIn.clear();
                 }
             });
             
