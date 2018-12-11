@@ -168,11 +168,11 @@ public class Main extends Application {
 					}
 							
 					
-					newFood.addNutrient("Calories", Double.parseDouble(calField.getText()));
-					newFood.addNutrient("Fat", Double.parseDouble(fatField.getText()));
-					newFood.addNutrient("Carbs", Double.parseDouble(carbField.getText()));
-					newFood.addNutrient("Fiber", Double.parseDouble(fiberField.getText()));
-					newFood.addNutrient("Protein", Double.parseDouble(proteinField.getText()));
+					newFood.addNutrient("calories", Double.parseDouble(calField.getText()));
+					newFood.addNutrient("fat", Double.parseDouble(fatField.getText()));
+					newFood.addNutrient("carbohydrate", Double.parseDouble(carbField.getText()));
+					newFood.addNutrient("fiber", Double.parseDouble(fiberField.getText()));
+					newFood.addNutrient("protein", Double.parseDouble(proteinField.getText()));
 
 					foodData.addFoodItem(newFood);
 					
