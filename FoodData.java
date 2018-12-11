@@ -62,15 +62,15 @@ public class FoodData implements FoodDataADT<FoodItem> {
                }
                String id = foodInfo[0];
                String name = foodInfo[1];
-               getFoodItemList().add(new FoodItem(id, name));
-               FoodItem current = getFoodItemList().get(getFoodItemList().size() - 1);
+               getAllFoodItems().add(new FoodItem(id, name));
+               FoodItem current = getAllFoodItems().get(getAllFoodItems().size() - 1);
                for(int i = 2; i < foodInfo.length; i+=2)
                {
             	   double value = Double.parseDouble(foodInfo[i+1]);
             	   current.addNutrient(foodInfo[i], value);
                }
             }  
-        	Collections.sort(getFoodItemList(), new customComparator());
+        	Collections.sort(getAllFoodItems(), new customComparator());
         	bufferedReader.close();
          }
         catch (Exception e)
@@ -97,9 +97,9 @@ public class FoodData implements FoodDataADT<FoodItem> {
         
         ArrayList<FoodItem> filteredFoodList = new ArrayList<FoodItem>();
         
-        for(int i = 0; i < getFoodItemList().size(); i++)
+        for(int i = 0; i < getAllFoodItems().size(); i++)
         {
-        	FoodItem currentFood = getFoodItemList().get(i);
+        	FoodItem currentFood = getAllFoodItems().get(i);
         	if (currentFood.getName().toLowerCase().contains(substring.toLowerCase()))
         	{
         		System.out.println(currentFood.getName());
@@ -109,7 +109,7 @@ public class FoodData implements FoodDataADT<FoodItem> {
         return filteredFoodList;
     }
 
-    /*	
+    /*
      * (non-Javadoc)
      * @see skeleton.FoodDataADT#filterByNutrients(java.util.List)
      */
@@ -157,8 +157,8 @@ public class FoodData implements FoodDataADT<FoodItem> {
      */
     @Override
     public void addFoodItem(FoodItem foodItem) {
-        getFoodItemList().add(foodItem);
-	Collections.sort(getFoodItemList(), new customComparator());
+    	getAllFoodItems().add(foodItem);
+    	Collections.sort(getAllFoodItems(), new customComparator());
     }
 
     /*
@@ -167,7 +167,7 @@ public class FoodData implements FoodDataADT<FoodItem> {
      */
     @Override
     public List<FoodItem> getAllFoodItems() {
-        return getFoodItemList();
+        return foodItemList;
     }
 
 
@@ -178,10 +178,10 @@ public class FoodData implements FoodDataADT<FoodItem> {
 			File file = new File(filename);
 			file.createNewFile();
 			PrintWriter writer = new PrintWriter(filename);	
-			for(int i = 0; i < getFoodItemList().size(); i++)
+			for(int i = 0; i < getAllFoodItems().size(); i++)
 			{
 				String foodInfo = "";
-				FoodItem currentFood = getFoodItemList().get(i);
+				FoodItem currentFood = getAllFoodItems().get(i);
 				HashMap<String, Double> nutrients = currentFood.getNutrients();
 				
 				//calories,100,fat,0,carbohydrate,0,fiber,0,protein,3
@@ -206,18 +206,16 @@ public class FoodData implements FoodDataADT<FoodItem> {
 		
 	}
 
-	public ObservableList<FoodItem> sortList(ObservableList<FoodItem> foodList){
+	protected ObservableList<FoodItem> sortList(ObservableList<FoodItem> foodList){
 		
 		 Collections.sort(foodList, new customComparator());
 		
 		return foodList;
 	}
-	public List<FoodItem> getFoodItemList() {
-		return foodItemList;
-	}
 
 
-	public void setFoodItemList(List<FoodItem> foodItemList) {
+
+	private void setFoodItemList(List<FoodItem> foodItemList) {
 		this.foodItemList = foodItemList;
 	}
 
