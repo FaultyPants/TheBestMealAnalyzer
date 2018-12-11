@@ -225,28 +225,16 @@ public class Main extends Application {
                 }
             });
 
-            addNewFoodFile.setLayoutX(8);
-            addNewFoodFile.setLayoutY(480);
+            addNewFoodFile.setLayoutX(10);
+            addNewFoodFile.setLayoutY(510);
             addNewFoodFile.setText("Load New Food File");
 
-            Button saveToFile = new Button();
-            saveToFile.setText("Save Food List");
-            saveToFile.setLayoutX(160);
-            saveToFile.setLayoutY(480);
             
-            saveToFile.setOnAction(new EventHandler<ActionEvent>() {
-
-                @Override
-                public void handle(ActionEvent event) {
-                     foodData.saveFoodItems(saveFileName.getText());
-                }   
-              }  
-            );
             
             Button addToMealList = new Button();
             addToMealList.setText("Add Selected Item to Meal List");
-            addToMealList.setLayoutX(8);
-            addToMealList.setLayoutY(510);
+            addToMealList.setLayoutX(10);
+            addToMealList.setLayoutY(477);
             
             addToMealList.setOnAction(new EventHandler<ActionEvent>() {
                 
@@ -280,7 +268,7 @@ public class Main extends Application {
             vbox.getChildren().addAll(label, foodTable);
             root2.getChildren().addAll(vbox);
             root2.getChildren().add(addNewFoodFile);
-            root2.getChildren().add(saveToFile);
+           // root2.getChildren().add(saveToFile);
             root2.getChildren().add(addToMealList);
 
         } catch (Exception e) {
@@ -410,6 +398,20 @@ public class Main extends Application {
             saveFileName.setText("output.txt");
             grid.addRow(10, saveFileLabel);
             grid.addRow(11, saveFileName);
+            
+            Button saveToFile = new Button();
+            saveToFile.setText("Save Food List");
+            saveToFile.setLayoutX(160);
+            saveToFile.setLayoutY(480);
+            
+            saveToFile.setOnAction(new EventHandler<ActionEvent>() {
+
+                @Override
+                public void handle(ActionEvent event) {
+                     foodData.saveFoodItems(saveFileName.getText());
+                }   
+              }  
+            );
 
             
             Button removeFilter = new Button();
@@ -453,6 +455,8 @@ public class Main extends Application {
 
             grid.add(doFilter, 3, 9);
             grid.add(removeFilter, 2, 9);
+            grid.addRow(11, saveToFile);
+           
             
             doFilter.setOnAction(new EventHandler<ActionEvent>() {
                 @Override public void handle(ActionEvent e) {
