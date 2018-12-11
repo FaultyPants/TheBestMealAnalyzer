@@ -111,9 +111,15 @@ public class FoodData implements FoodDataADT<FoodItem> {
      * @see skeleton.FoodDataADT#filterByNutrients(java.util.List)
      */
     @Override
+    /*
+     * (non-Javadoc)
+     * @see skeleton.FoodDataADT#filterByNutrients(java.util.List)
+     */
+    @Override
     public List<FoodItem> filterByNutrients(List<String> rules) {
         // TODO : Complete
-        ArrayList<FoodItem> filteredList = new ArrayList<FoodItem>();
+        //  create a copy of list with all food items
+        ArrayList<FoodItem> filteredList = new ArrayList<FoodItem>(foodItemList);
         HashSet<String> filteredBy = new HashSet<String>();
         
         for(int i = 0; i < rules.size(); i++) {
@@ -121,53 +127,29 @@ public class FoodData implements FoodDataADT<FoodItem> {
             
             //  should return array size 3 - [<nutrient>, <comparator>, <value>]
             String[] rule = ruleLine.split(" ");
-            //  check for not null?
+
             String nutrient = rule[0].trim();
             String comparator = rule[1].trim();
             String value = rule[2].trim();
-            
-            //  nutrient has already been filtered and just need to further filter 
-            //  existing filtered list
-            if(filteredBy.contains(nutrient)) {
-                for( int j = 0; j < filteredList.size(); j++) {
-                    FoodItem currItem = filteredList.get(j);
-                    // probably shouldn't ever have two filter criteria with one being ==
-                    if(comparator.equals("==")) {
-                        if(currItem.getNutrientValue(nutrient) != Double.valueOf(value)) {
-                            filteredList.remove(currItem);
-                        }
-                    } else if(comparator.equals("<=")) {
-                        if(currItem.getNutrientValue(nutrient) > Double.valueOf(value)) {
-                            filteredList.remove(currItem);
-                        }
-                    } else if(comparator.equals(">=")) {
-                        if(currItem.getNutrientValue(nutrient) < Double.valueOf(value)) {
-                            filteredList.remove(currItem);
-                        }
+                
+            Iterator<FoodItem> itr = filteredList.iterator();
+            while(itr.hasNext()) {
+                FoodItem currItem = itr.next();
+                if(comparator.equals("==")) {
+                    if(currItem.getNutrientValue(nutrient) != Double.valueOf(value)) {
+                        itr.remove();
                     }
-                }
-            } else {  //  if haven't filtered for nutrient yet look through entire list
-                filteredBy.add(nutrient);
-                for(int j = 0; j < getFoodItemList().size(); j++) {
-                    
-                    FoodItem currItem = getFoodItemList().get(j);
-                    if(comparator.equals("==")) {
-                        if(currItem.getNutrientValue(nutrient) == Double.valueOf(value)) {
-                            filteredList.add(currItem);
-                        }
-                    } else if(comparator.equals("<=")) {
-                        if(currItem.getNutrientValue(nutrient) <= Double.valueOf(value)) {
-                            filteredList.add(currItem);
-                        }
-                    } else if(comparator.equals(">=")) {
-                        if(currItem.getNutrientValue(nutrient) >= Double.valueOf(value)) {
-                            filteredList.add(currItem);
-                        }
+                } else if(comparator.equals("<=")) {
+                    if(currItem.getNutrientValue(nutrient) > Double.valueOf(value)) {
+                        itr.remove();
                     }
-                }
+                } else if(comparator.equals(">=")) {
+                    if(currItem.getNutrientValue(nutrient) < Double.valueOf(value)) {
+                        itr.remove();
+                    }
+                }                
             }
         }
-        
         return filteredList;
     }
 
