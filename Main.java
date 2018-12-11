@@ -170,9 +170,10 @@ public class Main extends Application {
 					
 	                ObservableList<FoodItem> data =
 	                                   FXCollections.observableArrayList(foodData.getAllFoodItems());			
-	            //    Iterable 
+	                
+	                data = foodData.sortList(data);
+	               
 					foodTable.setItems(data);
-					
 					
 					foodNameField.clear();
 					calField.clear();
@@ -204,7 +205,7 @@ public class Main extends Application {
 
                 @Override
                 public void handle(ActionEvent event) {
-                   foodData.loadFoodItems("foodItems.txt");
+                   foodData.loadFoodItems("foodItems.csv");
                    ObservableList<FoodItem> data =
                                    FXCollections.observableArrayList(foodData.getAllFoodItems());
                    foodTable.setItems(data);
