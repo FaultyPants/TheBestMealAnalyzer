@@ -433,7 +433,19 @@ public class Main extends Application {
             TextField equalsProteinIn = new TextField();
             equalsProteinIn.setMaxWidth(50);
             grid.addRow(8, proteinLabel, minProteinIn, maxProteinIn, equalsProteinIn);
+		
+		 Button removeFilter = new Button();
+            removeFilter.setText("Remove Filter");
+            removeFilter.setOnAction(new EventHandler<ActionEvent>(){
 
+                @Override
+                public void handle(ActionEvent event) {
+                    data = FXCollections.observableArrayList(foodData.getAllFoodItems());
+                    foodTable.setItems(data);
+                }
+            });
+		
+		
             // create button to actually execute program with filter input
 
             Button doFilter = new Button();
@@ -443,6 +455,7 @@ public class Main extends Application {
             GridPane.setHalignment(doFilter, HPos.RIGHT);
 
             grid.add(doFilter, 3, 9);
+	    grid.add(removeFilter, 2, 9);
             
             doFilter.setOnAction(new EventHandler<ActionEvent>() {
                 @Override public void handle(ActionEvent e) {
