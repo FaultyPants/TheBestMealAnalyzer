@@ -77,7 +77,7 @@ public class Main extends Application {
         primaryPane.setBottom(nutritionInformation());
         primaryPane.setLeft(filters());
 
-        Scene scene = new Scene(primaryPane, 1150, 650);
+        Scene scene = new Scene(primaryPane, 1200, 650);
         stage.setTitle("Food Query and Meal Analysis");
 
         stage.setScene(scene);
