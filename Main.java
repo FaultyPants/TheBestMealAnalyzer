@@ -1,3 +1,6 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -52,7 +55,12 @@ import javafx.scene.text.Text;
 
 import javafx.geometry.HPos;
 
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.*;
+
+
 public class Main extends Application {
+	static String fileName = "foodItems.txt";
 	static FoodData foodData;
 	private static List<FoodItem> mealListFood = new ArrayList<FoodItem>();
 	static TableView<FoodItem> mealListTable = new TableView<FoodItem>();
@@ -205,11 +213,41 @@ public class Main extends Application {
 
                 @Override
                 public void handle(ActionEvent event) {
-                   foodData.loadFoodItems("foodItems.csv");
-                   ObservableList<FoodItem> data =
+                	ObservableList<FoodItem> data = null;
+                
+                	if (fileExists(fileName)) {
+                   foodData.loadFoodItems(fileName);
+                   data =
                                    FXCollections.observableArrayList(foodData.getAllFoodItems());
-                   foodTable.setItems(data);
+                   
+                   
+                	}
+                	else {
+                		JFileChooser chooser = new JFileChooser();
+                        FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                                "Text Files", "csv", "txt");
+                        chooser.setFileFilter(filter);
+                        int returnVal = chooser.showOpenDialog(null);
+                        if(returnVal == JFileChooser.APPROVE_OPTION) {
+                            
+                        fileName = chooser.getSelectedFile().getAbsolutePath();
+                        
+                        foodData.loadFoodItems(chooser.getSelectedFile().getAbsolutePath());
+                        data =
+                                FXCollections.observableArrayList(foodData.getAllFoodItems());
+                        
+                	}
+                        foodTable.setItems(data);
+                	}
                 }
+
+				private boolean fileExists(String fileName) {
+					File checkFile = new File(fileName);
+					if (checkFile.exists()) {
+						return true;
+					}
+					return false;
+				}
             });
 
             addNewFoodFile.setLayoutX(8);
