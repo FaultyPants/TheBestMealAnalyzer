@@ -511,13 +511,13 @@ public class Main extends Application {
             Button analyzeFoodButton = new Button();
             Button removeFood = new Button();
 
-            analyzeFoodButton.setLayoutX(180);
+            analyzeFoodButton.setLayoutX(245);
             analyzeFoodButton.setLayoutY(480);
             analyzeFoodButton.setText("Analyze");
             
             removeFood.setLayoutX(10);
             removeFood.setLayoutY(480);
-            removeFood.setText("Remove");
+            removeFood.setText("Remove Selected Food Item");
             
             analyzeFoodButton.setOnAction(new EventHandler<ActionEvent>() {
             
