@@ -265,31 +265,42 @@ public class BPTree<K extends Comparable<K>, V> implements BPTreeADT<K, V> {
             return sibling;
         }
         
-        Node getChildLeftSibling(K key) {
-            int loc = Collections.binarySearch(keys, key);
-            int childIndex = loc >= 0 ? loc + 1 : -loc - 1;
-            if (childIndex > 0)
-                return children.get(childIndex - 1);
-
-            return null;
-        }
-        
-        Node getChildRightSibling(K key) {
-            int loc = Collections.binarySearch(keys, key);
-            int childIndex = loc >= 0 ? loc + 1 : -loc - 1;
-            if (childIndex < keys.size())
-                return children.get(childIndex + 1);
-
-            return null;
-        }
-        
         /**
          * (non-Javadoc)
          * @see BPTree.Node#rangeSearch(java.lang.Comparable, java.lang.String)
          */
         List<V> rangeSearch(K key, String comparator) {
-            // TODO : Complete
-            return null;
+            int operator = -2;
+            
+        	List<V> range = new LinkedList<V>();
+        	LeafNode node = this;
+        	
+        	//Establishes comparator type//
+        	switch(comparator) {
+        	case ">=":
+        		operator = 1;
+        		break;
+        	case "==":
+        		operator = 0;
+        		break;
+        	case "<=":
+        		operator = -1;
+        		break;
+        	}
+        	
+        	while (node != null) {
+        		Iterator<K> kIt = node.keys.iterator();
+        		Iterator<V> vIt = node.values.iterator();
+        		while (kIt.hasNext()) {
+        			K keyComp = kIt.next();
+        			V value = vIt.next();
+        			int compVal = keyComp.compareTo(key);      			
+        			if (operator == compVal) {
+        				range.add(value);
+        			}
+        		}
+        	}
+        	return range;
         }
     
 } // End of class InternalNode
