@@ -195,16 +195,7 @@ public class Main extends Application {
 
                 @Override
                 public void handle(ActionEvent event) {
-                    
-                 if (fileExists(fileName)) {
-                       
-                   foodData.loadFoodItems(fileName);
-                   data =
-                                   FXCollections.observableArrayList(foodData.getAllFoodItems());
-                   
-                    }
-                    else {
-                        
+                               
                         FileChooser chooser = new FileChooser();
                         chooser.getExtensionFilters().addAll(
                                 new ExtensionFilter("Text Files or CSV Files", "*.txt", "*.csv"));
@@ -219,8 +210,6 @@ public class Main extends Application {
                         foodData.loadFoodItems(selectedFile.getAbsolutePath());
                         data =
                                 FXCollections.observableArrayList(foodData.getAllFoodItems());
-                        
-                    }
                         
                     }
                     foodTable.setItems(data);
