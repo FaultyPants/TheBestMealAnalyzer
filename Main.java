@@ -102,6 +102,13 @@ public class Main extends Application {
         return grid;
     }
 
+    /**
+    * Creates the addFood Toolbar for the Stage
+    * 
+    *  Also instantiates and handles 
+    *  the addFood Button to add new FoodItems
+    *  to the FoodList Table
+    **/
     public static ToolBar addFood() {
 
         Button button = new Button("Add Food");
@@ -312,12 +319,10 @@ public class Main extends Application {
         return root2;
     }
 
-    /**
-     * filters pane on the left hand side of stage. Creates a grid for filter criteria
-     * such as name; and min, max, exact values for basic nutrients (calories, fat, carbs
-     * fiber, protein) and buttons to execute the filters on the food list and remove the 
-     * filters. 
-     */
+    // filters method that generates a place to input filter criteria
+
+    // made by Andrew
+
     public static Pane filters() {
         // create grid pane
 
@@ -341,9 +346,9 @@ public class Main extends Application {
 
             grid.add(nameLabel, 0, 1); // child, col, row
 
-            TextField nameIn = new TextField();   //  text field for filter by name
+            TextField nameIn = new TextField();
 
-            nameIn.setPromptText("Enter name (or substring) ");    //  let user know
+            nameIn.setPromptText("Enter name (or substring) ");
 
             grid.add(nameIn, 1, 1, 2, 1); // span 3 cols, 1 row
 
@@ -363,9 +368,6 @@ public class Main extends Application {
 
             GridPane.setHalignment(equalsLabel, HPos.LEFT);
 
-            //  each nutrient (calories, fat, carbs, fiber, protein) has a row.
-            //  each column then will have input for min, max, exact values to filter
-            
             grid.add(minLabel, 1, 3);
 
             grid.add(maxLabel, 2, 3);
@@ -382,7 +384,7 @@ public class Main extends Application {
             maxCalIn.setMaxWidth(50);
             TextField equalsCalIn = new TextField();
             equalsCalIn.setMaxWidth(50);
-            grid.addRow(4, calLabel, minCalIn, maxCalIn, equalsCalIn);  
+            grid.addRow(4, calLabel, minCalIn, maxCalIn, equalsCalIn);
 
             // fat row
 
@@ -431,20 +433,22 @@ public class Main extends Application {
             equalsProteinIn.setMaxWidth(50);
             grid.addRow(8, proteinLabel, minProteinIn, maxProteinIn, equalsProteinIn);
 
+            Label saveFileLabel = new Label("Save Food List Location: ");
+            saveFileName.setMaxWidth(250);
+            saveFileName.setText("output.txt");
+            grid.addRow(10, saveFileLabel);
+            grid.addRow(11, saveFileName);
+
             
-            
-            //  button to remove all filters and return to original list
             Button removeFilter = new Button();
             removeFilter.setText("Remove Filter");
             removeFilter.setOnAction(new EventHandler<ActionEvent>(){
 
                 @Override
                 public void handle(ActionEvent event) {
-                    //  food data list gets original list with all food items
                     data = FXCollections.observableArrayList(foodData.getAllFoodItems());
                     foodTable.setItems(data);
                     
-                    //  clear all text fields
                     nameIn.clear();
                     
                     minCalIn.clear();
@@ -469,23 +473,18 @@ public class Main extends Application {
                 }
             });
             
-            // create button to actually execute program with filter input
+         // create button to actually execute program with filter input
             Button doFilter = new Button();
             doFilter.setText("Filter");
 
             GridPane.setHalignment(doFilter, HPos.RIGHT);
-            //  add buttons to bottom right of filter grid
+
             grid.add(doFilter, 3, 9);
             grid.add(removeFilter, 2, 9);
             
-            //when doFilter button is pressed
             doFilter.setOnAction(new EventHandler<ActionEvent>() {
                 @Override public void handle(ActionEvent e) {
                     ArrayList<String> filters = new ArrayList<>();
-                    
-                    //  add string to array list to be passed to filter methods
-                    //  don't add if no text in text fields or if text field is empty
-                    //  string format "<nutrient> <comparator> <value>"
                     if(minCalIn.getText() != null && (!minCalIn.getText().trim().isEmpty()))
                         filters.add("calories >= " + minCalIn.getText());
                     if(maxCalIn.getText() != null && (!maxCalIn.getText().trim().isEmpty()))
@@ -527,15 +526,14 @@ public class Main extends Application {
                     List<FoodItem> nameFilteredList = foodData.filterByName(substring);
                     List<FoodItem> finalFilteredList = new ArrayList<>();
                     //only want to find intersection if name filter wasn't empty otherwise
-                    //nameFilter returns emptySet and intersection will be empty set
+                    //nameFilter returns emptySet
                     if(substring != null && (!substring.trim().isEmpty())) {
-                        //  find intersection of both name filter and nutrient
                         for (FoodItem nameItem : nameFilteredList) {
                             if(nutrientFilteredList.contains(nameItem)) {
                                 finalFilteredList.add(nameItem);
                             }
                         }
-                    } else {    //  when not filtering by name
+                    } else {
                         finalFilteredList = nutrientFilteredList;
                     }
                     ObservableList<FoodItem> data =
