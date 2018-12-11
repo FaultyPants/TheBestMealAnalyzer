@@ -114,9 +114,8 @@ public class FoodData implements FoodDataADT<FoodItem> {
      * @see skeleton.FoodDataADT#filterByNutrients(java.util.List)
      */
     @Override
-    public List<FoodItem> filterByNutrients(List<String> rules) {
-        // TODO : Complete
-        //  create a copy of list with all food items
+     public List<FoodItem> filterByNutrients(List<String> rules) {
+        //  create a copy of list with all food items that will be filtered
         ArrayList<FoodItem> filteredList = new ArrayList<FoodItem>(foodItemList);
         HashSet<String> filteredBy = new HashSet<String>();
         
@@ -133,15 +132,16 @@ public class FoodData implements FoodDataADT<FoodItem> {
             Iterator<FoodItem> itr = filteredList.iterator();
             while(itr.hasNext()) {
                 FoodItem currItem = itr.next();
+                //remove food items that don't fall within comparator, value criteria
                 if(comparator.equals("==")) {
                     if(currItem.getNutrientValue(nutrient) != Double.valueOf(value)) {
                         itr.remove();
                     }
-                } else if(comparator.equals("<=")) {
+                } else if(comparator.equals("<=")) { //  !(x<=y) = x>y
                     if(currItem.getNutrientValue(nutrient) > Double.valueOf(value)) {
                         itr.remove();
                     }
-                } else if(comparator.equals(">=")) {
+                } else if(comparator.equals(">=")) {    //  !(x>=y) = x<y
                     if(currItem.getNutrientValue(nutrient) < Double.valueOf(value)) {
                         itr.remove();
                     }
@@ -158,6 +158,7 @@ public class FoodData implements FoodDataADT<FoodItem> {
     @Override
     public void addFoodItem(FoodItem foodItem) {
     	getAllFoodItems().add(foodItem);
+	//  maintain sorted list
     	Collections.sort(getAllFoodItems(), new customComparator());
     }
 
@@ -167,6 +168,7 @@ public class FoodData implements FoodDataADT<FoodItem> {
      */
     @Override
     public List<FoodItem> getAllFoodItems() {
+	//  foodItemList holds all food items (unfiltered)
         return foodItemList;
     }
 
