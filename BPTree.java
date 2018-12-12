@@ -170,109 +170,128 @@ public class BPTree<K extends Comparable<K>, V> implements BPTreeADT<K, V> {
     
     } // End of abstract class Node
     
-    /**
-     * This class represents an internal node of the tree.
-     * This class is a concrete sub class of the abstract Node class
-     * and provides implementation of the operations
-     * required for internal (non-leaf) nodes.
-     * 
-     * @author sapan
-     */
-    private class InternalNode extends Node {
+ /**
+  * This class represents an internal node of the tree.
+  * This class is a concrete sub class of the abstract Node class
+  * and provides implementation of the operations
+  * required for internal (non-leaf) nodes.
+  * 
+  * @author sapan
+  */
+ private class InternalNode extends Node {
 
-        // List of children nodes
-        List<Node> children;
+     // List of children nodes
+     List<Node> children;
+     
+     /**
+      * Package constructor
+      */
+     InternalNode() {
+         super();
+         // makes a new array list for keys and children
+         this.keys = new ArrayList<K>();
+         this.children = new ArrayList<Node>();
+     }
+     
+     /**
+      * (non-Javadoc)
+      * @see BPTree.Node#getFirstLeafKey()
+      */
+     K getFirstLeafKey() {
+         //returns the first leaf of the tree
+         return children.get(0).getFirstLeafKey();
+     }
+     
+     /**
+      * (non-Javadoc)
+      * @see BPTree.Node#isOverflow()
+      */
+     boolean isOverflow() {
+    // returns true if the size of the leaf nodes list is bigger than the branching factor
+         return children.size() > branchingFactor;
+     }
+     
+     /**
+      * (non-Javadoc)
+      * @see BPTree.Node#insert(java.lang.Comparable, java.lang.Object)
+      */
+     void insert(K key, V value) {
+         // sets a new node to the node of the passed in key
+        Node child = getChild(key);
+        // inserts the child into the BP+tree
+        child.insert(key, value);
         
-        /**
-         * Package constructor
-         */
-        InternalNode() {
-            super();
-            this.keys = new ArrayList<K>();
-            this.children = new ArrayList<Node>();
+        // if the tree is overflow, split the tree
+        if(child.isOverflow()) {
+            Node sibling = child.split();
+            insertChild(sibling.getFirstLeafKey(), sibling);
         }
         
-        /**
-         * (non-Javadoc)
-         * @see BPTree.Node#getFirstLeafKey()
-         */
-        K getFirstLeafKey() {
-            return children.get(0).getFirstLeafKey();
+        // splits the tree if the root is overflow
+        if(root.isOverflow()) {
+            Node sibling = split();
+            
+            // creates a new internal node
+            InternalNode newRoot = new InternalNode();
+            //adds the new root
+            newRoot.keys.add(sibling.getFirstLeafKey());
+            newRoot.children.add(this);
+            newRoot.children.add(sibling);
+            // sets the root to the new root
+            root = newRoot;
         }
-        
-        /**
-         * (non-Javadoc)
-         * @see BPTree.Node#isOverflow()
-         */
-        boolean isOverflow() {
-            // TODO : Complete
-            return children.size() > branchingFactor;
-        }
-        
-        /**
-         * (non-Javadoc)
-         * @see BPTree.Node#insert(java.lang.Comparable, java.lang.Object)
-         */
-        void insert(K key, V value) {
-           Node child = getChild(key);
-           child.insert(key, value);
-           
-           if(child.isOverflow()) {
-               Node sibling = child.split();
-               insertChild(sibling.getFirstLeafKey(), sibling);
-           }
-           
-           if(root.isOverflow()) {
-               Node sibling = split();
-               InternalNode newRoot = new InternalNode();
-               newRoot.keys.add(sibling.getFirstLeafKey());
-               newRoot.children.add(this);
-               newRoot.children.add(sibling);
-               root = newRoot;
-           }
-        }
-        
-        Node getChild(K key) {
-            int loc = Collections.binarySearch(keys, key);
-            int childIndex = loc >= 0 ? loc + 1 : -loc - 1;
-            return children.get(childIndex);
-        }
-        
-        void insertChild(K key, Node child) {
-            int loc = Collections.binarySearch(keys, key);
-            int childIndex = loc >= 0 ? loc + 1 : -loc - 1;
-            if (loc >= 0) {
-                children.set(childIndex, child);
-            } else {
-                keys.add(childIndex, key);
-                children.add(childIndex + 1, child);
-            }
-        }
-        
-        /**
-         * (non-Javadoc)
-         * @see BPTree.Node#split()
-         */
-        Node split() {
-            int from = keys.size() / 2 + 1, to = keys.size();
-            InternalNode sibling = new InternalNode();
-            sibling.keys.addAll(keys.subList(from, to));
-            sibling.children.addAll(children.subList(from, to + 1));
+     }
+     
+     Node getChild(K key) {
+         // gets the location of the the keys in the collection
+         int loc = Collections.binarySearch(keys, key);
+         // gets the index of the child
+         int childIndex = loc >= 0 ? loc + 1 : -loc - 1;
+         //returns the index of the child
+         return children.get(childIndex);
+     }
+     
+     //inserts the child into the tree
+     void insertChild(K key, Node child) {
+         // gets the location internal node
+         int loc = Collections.binarySearch(keys, key);
+         // gets the index of the child
+         int childIndex = loc >= 0 ? loc + 1 : -loc - 1;
+         // sets the new child if the location is greater than 0
+         if (loc >= 0) {
+             children.set(childIndex, child);
+          // sets the new child if the location is less than 0
+         } else {
+             keys.add(childIndex, key);
+             children.add(childIndex + 1, child);
+         }
+     }
+     
+     /**
+      * (non-Javadoc)
+      * @see BPTree.Node#split()
+      */
+     Node split() {
+         int from = keys.size() / 2 + 1;
+         int to = keys.size();
+         InternalNode sibling = new InternalNode();
+         sibling.keys.addAll(keys.subList(from, to));
+         sibling.children.addAll(children.subList(from, to + 1));
 
-            keys.subList(from - 1, to).clear();
-            children.subList(from, to + 1).clear();
+         keys.subList(from - 1, to).clear();
+         children.subList(from, to + 1).clear();
 
-            return sibling;
-        }
-        
-        /**
-         * (non-Javadoc)
-         * @see BPTree.Node#rangeSearch(java.lang.Comparable, java.lang.String)
-         */
-        List<V> rangeSearch(K key, String comparator) {
-        	return null;
-        }
-    
+         return sibling;
+     }
+     
+     /**
+      * (non-Javadoc)
+      * @see BPTree.Node#rangeSearch(java.lang.Comparable, java.lang.String)
+      */
+     List<V> rangeSearch(K key, String comparator) {
+         return null;
+     }
+ 
 } // End of class InternalNode
     
     
