@@ -25,7 +25,7 @@ public class FoodItem {
     public FoodItem(String id, String name) {
     	this.name=name;
     	this.id=id;
-        nutrients = new HashMap<String, Double>();
+    	nutrients = new HashMap<String, Double>();
     }
     
     /**
@@ -34,7 +34,6 @@ public class FoodItem {
      * @return name of the food item
      */
     public String getName() {
-    	
         return this.name;
     }
 
@@ -43,8 +42,7 @@ public class FoodItem {
      * 
      * @return id of the food item
      */
-    public String getID() {
-        
+    public String getID() {     
         return this.id;
     }
     
@@ -62,8 +60,11 @@ public class FoodItem {
      * If nutrient already exists, updates its value.
      */
     public void addNutrient(String name, double value) {   
+    	if (value < 0)
+    	{
+    		throw new IllegalArgumentException();
+    	}
     	nutrients.put(name, value);
-    	
     }
 
     /**
