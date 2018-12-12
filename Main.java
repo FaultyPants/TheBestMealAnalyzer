@@ -515,11 +515,11 @@ public class Main extends Application {
                         filters.add("fat == " + equalsFatIn.getText());
                     
                     if(minCarbIn.getText() != null && (!minCarbIn.getText().trim().isEmpty()))
-                        filters.add("carbs >= " + minCarbIn.getText());
+                        filters.add("carbohydrate >= " + minCarbIn.getText());
                     if(maxCarbIn.getText() != null && (!maxCarbIn.getText().trim().isEmpty()))
-                        filters.add("carbs <= " + maxCarbIn.getText());
+                        filters.add("carbohydrate <= " + maxCarbIn.getText());
                     if(equalsCarbIn.getText() != null && (!equalsCarbIn.getText().trim().isEmpty()))
-                        filters.add("carbs == " + equalsCarbIn.getText());
+                        filters.add("carbohydrate == " + equalsCarbIn.getText());
                     
                     if(minFiberIn.getText() != null && (!minFiberIn.getText().trim().isEmpty()))
                         filters.add("fiber >= " + minFiberIn.getText());
