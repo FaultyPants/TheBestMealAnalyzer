@@ -102,7 +102,6 @@ public class FoodData implements FoodDataADT<FoodItem> {
         	FoodItem currentFood = getAllFoodItems().get(i);
         	if (currentFood.getName().toLowerCase().contains(substring.toLowerCase()))
         	{
-        		System.out.println(currentFood.getName());
         		filteredFoodList.add(currentFood);
         	}
         }
