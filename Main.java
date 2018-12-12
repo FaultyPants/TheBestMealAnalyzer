@@ -455,6 +455,20 @@ public class Main extends Application {
             saveFileName.setText("output.txt");
             grid.addRow(10, saveFileLabel);
             grid.addRow(11, saveFileName);
+            
+            Button saveToFile = new Button();
+            saveToFile.setText("Save Food List");
+            saveToFile.setLayoutX(160);
+            saveToFile.setLayoutY(480);
+            
+            saveToFile.setOnAction(new EventHandler<ActionEvent>() {
+
+                @Override
+                public void handle(ActionEvent event) {
+                     foodData.saveFoodItems(saveFileName.getText());
+                }   
+              }  
+            );
 
             
             Button removeFilter = new Button();
@@ -497,7 +511,8 @@ public class Main extends Application {
             GridPane.setHalignment(doFilter, HPos.RIGHT);
 
             grid.add(doFilter, 3, 9);
-            grid.add(removeFilter, 2, 9);
+            grid.add(removeFilter, 2, 9
+            grid.addRow(11, saveToFile);
             
             //when doFilter button is pressed
             doFilter.setOnAction(new EventHandler<ActionEvent>() {
