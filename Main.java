@@ -333,10 +333,12 @@ public class Main extends Application {
         return root2;
     }
 
-    // filters method that generates a place to input filter criteria
-
-    // made by Andrew
-
+    /**
+     * filters pane on the left hand side of stage. Creates a grid for filter criteria
+     * such as name; and min, max, exact values for basic nutrients (calories, fat, carbs
+     * fiber, protein) and buttons to execute the filters on the food list and remove the 
+     * filters. 
+     */
     public static Pane filters() {
         // create grid pane
 
@@ -368,7 +370,8 @@ public class Main extends Application {
 
             // create labels for the top of "table (grid)" to specify what should go in
 
-            // each input
+            //  each nutrient (calories, fat, carbs, fiber, protein) has a row.
+            //  each column then will have input for min, max, exact values to filter
 
             Label minLabel = new Label("Min");
             
@@ -462,7 +465,7 @@ public class Main extends Application {
                 public void handle(ActionEvent event) {
                     data = FXCollections.observableArrayList(foodData.getAllFoodItems());
                     foodTable.setItems(data);
-                    
+                    //  clear all text fields
                     nameIn.clear();
                     
                     minCalIn.clear();
@@ -496,10 +499,15 @@ public class Main extends Application {
             grid.add(doFilter, 3, 9);
             grid.add(removeFilter, 2, 9);
             
+            //when doFilter button is pressed
             doFilter.setOnAction(new EventHandler<ActionEvent>() {
                 @Override public void handle(ActionEvent e) {
                     try {
                     ArrayList<String> filters = new ArrayList<>();
+                        
+                    //  add string to array list to be passed to filter methods
+                    //  don't add if no text in text fields or if text field is empty
+                    //  string format "<nutrient> <comparator> <value>"
                     if(minCalIn.getText() != null && (!minCalIn.getText().trim().isEmpty()))
                         filters.add("calories >= " + minCalIn.getText());
                     if(maxCalIn.getText() != null && (!maxCalIn.getText().trim().isEmpty()))
@@ -549,6 +557,7 @@ public class Main extends Application {
                             }
                         }
                     } else {
+                        //  when not filtering by name
                         finalFilteredList = nutrientFilteredList;
                     }
                     ObservableList<FoodItem> data =
