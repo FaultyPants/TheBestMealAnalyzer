@@ -161,16 +161,21 @@ public class Main extends Application {
                         
                         return;//Do nothing
                     }
-                            
+                     
+                    try {
                     //Otherwise parse the required information from the Text Fields
                     newFood.addNutrient("calories", Double.parseDouble(calField.getText()));
                     newFood.addNutrient("fat", Double.parseDouble(fatField.getText()));
                     newFood.addNutrient("carbohydrate", Double.parseDouble(carbField.getText()));
                     newFood.addNutrient("fiber", Double.parseDouble(fiberField.getText()));
                     newFood.addNutrient("protein", Double.parseDouble(proteinField.getText()));
-
-                    //And add the new food item
-                    foodData.addFoodItem(newFood);
+                        //And add the new food item
+                        foodData.addFoodItem(newFood);
+                    }
+                    
+                    catch (Exception error)
+                    {
+                    }
                     
                     //Create a new Observable list of the current foodData list
                     ObservableList<FoodItem> data =
@@ -493,6 +498,7 @@ public class Main extends Application {
             
             doFilter.setOnAction(new EventHandler<ActionEvent>() {
                 @Override public void handle(ActionEvent e) {
+                    try {
                     ArrayList<String> filters = new ArrayList<>();
                     if(minCalIn.getText() != null && (!minCalIn.getText().trim().isEmpty()))
                         filters.add("calories >= " + minCalIn.getText());
@@ -548,6 +554,11 @@ public class Main extends Application {
                     ObservableList<FoodItem> data =
                                     FXCollections.observableArrayList(finalFilteredList);
                     foodTable.setItems(data);
+                    }
+                    catch (Exception error)
+                    {
+                        
+                    }
                 }
             });
 
