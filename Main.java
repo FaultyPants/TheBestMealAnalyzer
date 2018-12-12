@@ -571,32 +571,48 @@ public class Main extends Application {
 
     }
 
+/**
+  * This method sets up the layout and functionality of the mealList pane on the scene
+  * 
+  * @return root2
+  */
     public static Pane mealList() {
+        
+        // creates a pane for the mealList to show up on the scene
         Pane root2 = new Pane();
 
         try {
-
+            
+            // creates new buttons for the mealList pane
             Button analyzeFoodButton = new Button();
             Button removeFood = new Button();
 
+            //sets the layout of the analyzeFoodButton
             analyzeFoodButton.setLayoutX(245);
             analyzeFoodButton.setLayoutY(480);
             analyzeFoodButton.setText("Analyze");
             
+            // sets the layout of the removeFood button
             removeFood.setLayoutX(10);
             removeFood.setLayoutY(480);
             removeFood.setText("Remove Selected Food Item");
             
+            // Event handler class for the analyzeFoodButton
             analyzeFoodButton.setOnAction(new EventHandler<ActionEvent>() {
             
+             // Event handler for the analyzeFoodButton
             @Override
             public void handle(ActionEvent event) {
+                
+                // sets the values of the nutrient fields
                 double calories = 0;
                 double fat = 0;
                 double fiber = 0;
                 double carbohydrate = 0;
                 double protein = 0;
                 String allFood = "";
+                
+                // gets the values of each food item and concatenates the appropriate field
                 for(int i = 0; i < mealListTable.getItems().size(); i++)
                 {
                     ObservableList<FoodItem> foodList = mealListTable.getItems();
@@ -610,6 +626,7 @@ public class Main extends Application {
                     allFood += currentFoodItem.getName() + ", ";                    
                 }
                 
+                // displays the values of the nutrients to the appropriate text box
                 calField.setText(Double.toString(calories));
                 fatField.setText(Double.toString(fat));
                 fiberField.setText(Double.toString(fiber));
@@ -619,35 +636,54 @@ public class Main extends Application {
             }           
             });
             
-            
-            
+            // Event handler class for the removeFood button
             removeFood.setOnAction(new EventHandler<ActionEvent>() {
             
-            
+            //Event handler for the removeFood button
             @Override
             public void handle(ActionEvent event) {
+                // creates a FoodItem object to set the selected item to
                 FoodItem mealItem = (FoodItem) mealListTable.getSelectionModel().getSelectedItem();
+                
+                // removes the selected FoodItem object from the mealList list
                 mealListFood.remove(mealItem);
+                
+                // sets the mealList list to an observable list that sets the items in the 
+                //mealList table view
                 ObservableList<FoodItem> mealListData =
                                 FXCollections.observableArrayList(mealListFood);
+                
+                //sets the items of the mealList tableview to the items in the observableList
                 mealListTable.setItems(mealListData);
                 }
-            });
+            }); 
             
+            // Creates a lable for the meal list 
             final Label label = new Label("Meal List");
-            
             label.setFont(new Font("Arial", 20));
+            
+            //Creates a column for the mealList table view 
             TableColumn foodNameCol = new TableColumn("Food Name");
             foodNameCol.setMinWidth(300);
+            
+            // creates a property for the table view cell to get the name from the 
+            // observable list
             foodNameCol.setCellValueFactory(
                             new PropertyValueFactory<>("name"));
             
+            // adds the foodNameCol to the mealList table view
             mealListTable.getColumns().addAll(foodNameCol);
        
+            // creates a vertical box where the table view and buttons will be
             final VBox vbox = new VBox();
             vbox.setSpacing(5);
             vbox.setPadding(new Insets(45, 0, 0, 10));
+            
+            // adds the table view and label to the vertical box
             vbox.getChildren().addAll(label, mealListTable);
+            
+            // adds the vertical box, analyzeFoodButton button, and removeFood button to 
+            // the pane
             root2.getChildren().addAll(vbox);
             root2.getChildren().add(analyzeFoodButton);
             root2.getChildren().add(removeFood);
@@ -655,6 +691,8 @@ public class Main extends Application {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        
+        // returns the pane to be displayed on the scene
         return root2;
     }
 }
